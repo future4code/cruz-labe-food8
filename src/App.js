@@ -1,10 +1,12 @@
-import React from 'react';
+import React from "react";
+import Router from "./Router/Router";
+import GlobalStateProvider from "./GlobalState/GlobalStateProvider";
 
 function App() {
   return (
-      <GloblaStateProvider>
-        <Router />
-      </GloblaStateProvider>
+    <GlobalStateProvider>
+      <Router />
+    </GlobalStateProvider>
   );
 }
 
