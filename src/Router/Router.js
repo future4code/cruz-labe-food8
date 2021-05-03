@@ -30,8 +30,9 @@ function Router() {
         </Route>
 
         <Route exact path="/feed">
-          <MenuNav />
+         
           <FeedPage />
+          <MenuNav />
         </Route>
 
         <Route exact path="/feed/:restaurantId">
