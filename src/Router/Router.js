@@ -30,7 +30,7 @@ function Router() {
         </Route>
 
         <Route exact path="/feed">
-          <MenuNav />
+          {/* <MenuNav /> */}
           <FeedPage />
         </Route>
 

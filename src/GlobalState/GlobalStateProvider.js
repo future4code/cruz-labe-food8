@@ -10,12 +10,12 @@ const GlobalStateProvider = (props) => {
 
   const logout = () => {
     window.localStorage.removeItem("token");
-    goToLogin(history);
+    // goToLogin(history);
   };
 
   const states = {};
   const setters = {};
-  const requests = {};
+  const requests = { logout };
 
   const data = { states, setters, requests };
 
