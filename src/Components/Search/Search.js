@@ -3,6 +3,7 @@ import { useForm } from "../../Hooks/useForm";
 import { initialForm } from "../../Constants/inputs";
 import { Icon, ButtonBack, InputSearch, ContainerSearch, HeaderContainer, Title, ContainerFilter } from './Styled'
 import GlobalStateContext from "../../GlobalState/GlobalStateContext";
+import back from '../../Imgs/back.png'
 
 function Search() {
     const [form, onChange, resetForm] = useForm(initialForm)
@@ -64,7 +65,7 @@ function Search() {
         if (searchOpen) {
             return (
                 <HeaderContainer back>
-                    <ButtonBack onClick={() => onClickBack()}> ˂ </ButtonBack>
+                    <ButtonBack onClick={() => onClickBack()}> <img src={back} alt='back' /> </ButtonBack>
                     <Title>Busca</Title>
                     <p></p>
                 </HeaderContainer>
@@ -77,7 +78,7 @@ function Search() {
                     </HeaderContainer>
                     <div>
                         <form onSubmit={sendForm}>
-                            <Icon src='https://cdn.zeplin.io/5dd5ab8e5fb2a0060f81698f/assets/2B6D2876-FB2A-4EF4-8B8D-5314BF50995F.svg' alt={"search"} />
+                            <Icon src='https://cdn.zeplin.io/5dd5ab8e5fb2a0060f81698f/assets/2B6D2876-FB2A-4EF4-8B8D-5314BF50995F.svg' alt="search" />
 
                             <InputSearch
                                 type={"text"}

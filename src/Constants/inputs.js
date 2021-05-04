@@ -3,5 +3,6 @@ export const initialForm = {
     category: '',
     name: '',
     email:'',
+    quantity: '',
 }
 
