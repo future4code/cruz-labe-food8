@@ -16,6 +16,7 @@ const DivMaster = styled.div`
 const ImageInitial = styled.img`
   width:126px;
   height:65px;
+  
 `
 
 const HomePage = () => {

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useForm } from "../../Hooks/useForm";
 import { initialForm } from "../../Constants/inputs";
-import { ButtonBack, InputSearch, ContainerSearch, ContainerTitle, Title } from './Styled'
+import { Icon, ButtonBack, InputSearch, ContainerSearch, HeaderContainer, Title, ContainerFilter } from './Styled'
 import GlobalStateContext from "../../GlobalState/GlobalStateContext";
 
 function Search() {
@@ -31,6 +31,7 @@ function Search() {
         e.preventDefault()
         filterName()
         resetForm()
+        setSearchOpen(true)
     }
 
     const filterName = () => {
@@ -62,31 +63,36 @@ function Search() {
 
         if (searchOpen) {
             return (
-                <ContainerTitle>
+                <HeaderContainer back>
                     <ButtonBack onClick={() => onClickBack()}> ˂ </ButtonBack>
                     <Title>Busca</Title>
-                </ContainerTitle>
+                    <p></p>
+                </HeaderContainer>
             )
         } else {
             return (
                 <>
-                    <ContainerTitle>
+                    <HeaderContainer>
                         <Title>Ifuture</Title>
-                    </ContainerTitle>
+                    </HeaderContainer>
+                    <div>
+                        <form onSubmit={sendForm}>
+                            <Icon src='https://cdn.zeplin.io/5dd5ab8e5fb2a0060f81698f/assets/2B6D2876-FB2A-4EF4-8B8D-5314BF50995F.svg' alt={"search"} />
 
-                    <form onSubmit={sendForm}>
+                            <InputSearch
+                                type={"text"}
+                                name={"inputSearch"}
+                                value={form.inputSearch}
+                                placeholder={"Restaurante"}
+                                onChange={onChange}
+                            >
+                            </InputSearch>
 
-                        <input
-                            type={"text"}
-                            name={"inputSearch"}
-                            value={form.inputSearch}
-                            placeholder={"Restaurante"}
-                            onChange={onChange}
-                        >
-                        </input>
-
-                    </form>
-                    {categoryOptions}
+                        </form>
+                    </div>
+                    <ContainerFilter>
+                        {categoryOptions}
+                    </ContainerFilter>
                 </>
             )
         }

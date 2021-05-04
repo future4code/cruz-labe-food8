@@ -1,13 +1,17 @@
 import React from 'react'
 import { useProtectedPage } from '../../Hooks/useProtectedPage'
+import {DivProducts} from './Styled'
 import Search from '../../Components/Search/Search'
 
 function FeedPage() {
     useProtectedPage()
 
-    return (
+   return (
         <div>
-            <Search />
+            <Search/>
+            <DivProducts>
+
+            </DivProducts>
         </div>
     );
 }
