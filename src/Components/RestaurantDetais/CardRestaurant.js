@@ -4,8 +4,8 @@ import { axiosConfig, baseUrl } from '../../Constants/urls';
 import { useParams } from 'react-router-dom'
 import ProductsCard from './ProductsCard'
 import axios from 'axios'
-import { gotToLastPage } from '../../Router/coordinator'
 import { ButtonBack, Title, HeaderContainer, ContainerInformation, useStyles } from './Styled'
+import { goToLastPage} from '../../Router/coordinator'
 import back from '../../Imgs/back.png'
 import {Card, CardActionArea, CardContent, CardMedia, Typography } from '@material-ui/core';
 
@@ -57,8 +57,8 @@ function CardRestaurant() {
     return (
         <div>
             <HeaderContainer>
-                <ButtonBack onClick={() => gotToLastPage()}> <img src={back} alt='back' /> </ButtonBack>
-                <Title restaurant>Restaurante</Title>
+                <ButtonBack onClick={() => goToLastPage()}> <img src={back} alt='back' /> </ButtonBack>
+                <Title>Restaurante</Title>
                 <p></p>
             </HeaderContainer>
             {name ?

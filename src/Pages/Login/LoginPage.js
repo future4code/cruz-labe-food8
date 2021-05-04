@@ -14,7 +14,7 @@ import { useForm } from "../../Hooks/useForm";
 import { goToFeed, goToRegister } from "../../Router/coordinator";
 import logo_img from "../../Imgs/logo_red.png";
 
-const Login = () => {
+const LoginPage = () => {
   const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
   const [form, formHandle] = useForm({ email: "", password: "" });
@@ -78,6 +78,5 @@ const Login = () => {
     </MainContainer>
   );
 };
-
-export default Login;
+export default LoginPage;
 
