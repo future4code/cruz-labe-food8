@@ -13,9 +13,8 @@ import {Card, CardActionArea, CardContent, CardMedia, Typography } from '@materi
 function CardRestaurant() {
     const classes = useStyles();
     useProtectedPage()
-    // const pathParams = useParams()
-    // const restaurantId = pathParams.restaurantId
-    // const [data] = useRequestData({}, `${baseUrl}/restaurants/2`, axiosConfig)
+    const pathParams = useParams()
+    const restaurantId = pathParams.restaurantId
     const [data, setData] = useState({})
     const { shipping, name, logoUrl, category, address, deliveryTime } = data || {}
     const [product, setProduct] = useState([])
@@ -27,7 +26,7 @@ function CardRestaurant() {
 
     const getRestaurant = async () => {
         try {
-            const res = await axios.get(`${baseUrl}/restaurants/2`, axiosConfig)
+            const res = await axios.get(`${baseUrl}/restaurants/${restaurantId}`, axiosConfig)
             setData(res.data.restaurant)
             setProduct(res.data.restaurant.products)
             getCategories()
