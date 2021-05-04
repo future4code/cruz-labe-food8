@@ -52,6 +52,8 @@ function CardRestaurant() {
         setProductsCategories(categories)
     }
 
+    const timeDelivery = deliveryTime + 15
+
     return (
         <div>
             <HeaderContainer>
@@ -76,7 +78,7 @@ function CardRestaurant() {
                                 </Typography>
                                 <ContainerInformation frete>
                                     <Typography className={classes.information} component="p">
-                                        {deliveryTime} min
+                                        {deliveryTime} - {timeDelivery} min
                                         </Typography>
                                     <Typography className={classes.information} component="p">
                                         Frete R${shipping},00
