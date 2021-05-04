@@ -16,6 +16,7 @@ const DivMaster = styled.div`
 const ImageInitial = styled.img`
   width:126px;
   height:65px;
+  
 `
 
 const HomePage = () => {
@@ -23,23 +24,18 @@ const HomePage = () => {
   const history = useHistory()
 
   const go = () => {
-  goToLogin(history)
-}
+    goToLogin(history)
+  }
 
-
-
-
-  return(
+  return (
     <DivMaster>
-      <ImageInitial 
-      
-      src = 'https://cdn.zeplin.io/5dd5ab8e5fb2a0060f81698f/assets/BEEEAD31-8486-4A4B-AA8C-239F38A9FB65.svg'
-      
-      onClick = {go}
-      
+      <ImageInitial
+
+        src='https://cdn.zeplin.io/5dd5ab8e5fb2a0060f81698f/assets/BEEEAD31-8486-4A4B-AA8C-239F38A9FB65.svg'
+
+        onClick={go}
+
       >
-
-
       </ImageInitial>
     </DivMaster>
   );

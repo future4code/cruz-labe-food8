@@ -5,40 +5,14 @@ import {
   TextField,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
+import { StyledForm, MainContainer, Logo, Title} from './Styled'
 import axios from "axios";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import styled from "styled-components";
-import { baseUrl } from "../../Contants/urls";
+import { baseUrl } from "../../Constants/urls";
 import { useForm } from "../../Hooks/useForm";
+import { goToFeed, goToRegister } from "../../Router/coordinator";
 import logo_img from "../../Imgs/logo_red.png";
-import { goToRegister } from "../../Router/coordinator";
-
-const MainContainer = styled.div`
-  font-family: Roboto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0rem 1rem;
-`;
-
-const Logo = styled.img`
-  margin-top: 5.5rem;
-  width: 6.5rem;
-`;
-
-const Title = styled.h3`
-  font-size: 1rem;
-  font-weight: 500;
-  margin-top: 30px;
-`;
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  text-align: center;
-  gap: 20px;
-`;
 
 const LoginPage = () => {
   const history = useHistory();
@@ -52,6 +26,7 @@ const LoginPage = () => {
       .then((res) => {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('user', JSON.stringify(res.data.user));
+        goToFeed(history)
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -103,5 +78,5 @@ const LoginPage = () => {
     </MainContainer>
   );
 };
-
 export default LoginPage;
+

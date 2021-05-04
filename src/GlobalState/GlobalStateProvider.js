@@ -1,27 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,  } from "react";
 import { useHistory } from "react-router";
 import GlobalStateContext from "./GlobalStateContext";
-import axios from "axios";
+import { baseUrl, axiosConfig } from '../Constants/urls'
 import { goToLogin } from "../Router/coordinator";
+import useRequestData from '../Hooks/useRequestData'
 
 const GlobalStateProvider = (props) => {
   const history = useHistory();
-  useEffect(() => {}, []);
+  const [data] = useRequestData({}, `${baseUrl}/restaurants/`, axiosConfig)
+  const restaurants = data.restaurants
+
 
   const logout = () => {
     window.localStorage.removeItem("token");
     goToLogin(history);
   };
 
-  const states = {};
+  const states = {restaurants};
   const setters = {};
-  const requests = {};
+  const requests = { logout };
 
-  const data = { states, setters, requests };
+  const baseData = { states, setters, requests };
 
   return (
     <div>
-      <GlobalStateContext.Provider value={data}>
+      <GlobalStateContext.Provider value={baseData}>
         {props.children}
       </GlobalStateContext.Provider>
     </div>
