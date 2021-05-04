@@ -30,7 +30,6 @@ function Router() {
         </Route>
 
         <Route exact path="/feed">
-         
           <FeedPage />
           <MenuNav />
         </Route>
@@ -40,8 +39,8 @@ function Router() {
         </Route>
 
         <Route exact path="/profile">
-          <MenuNav />
           <ProfilePage />
+          <MenuNav />
         </Route>
 
         <Route exact path="/profile/address">
@@ -53,8 +52,8 @@ function Router() {
         </Route>
 
         <Route exact path="/cart">
-          <MenuNav />
           <CartPage />
+          <MenuNav />
         </Route>
 
         <Route>
