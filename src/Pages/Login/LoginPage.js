@@ -1,80 +1,83 @@
-import React, { useEffect, useContext } from 'react'
-import { baseUrl } from '../../contants/urls'
-import axios from 'axios';
-import { initialForm } from "../../contants/inputs";
-import { useHistory } from 'react-router-dom';
-import { goToFeed, goToLogin, goToRegister } from '../../Router/coordinator'
+import {
+  Button,
+  IconButton,
+  InputAdornment,
+  TextField,
+} from "@material-ui/core";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
+import { StyledForm, MainContainer, Logo, Title} from './Styled'
+import axios from "axios";
+import React, { useState } from "react";
+import { useHistory } from "react-router";
+import { baseUrl } from "../../Constants/urls";
 import { useForm } from "../../Hooks/useForm";
-import GlobalStateContext from '../../GlobalState/GlobalStateContext'
+import { goToFeed, goToRegister } from "../../Router/coordinator";
+import logo_img from "../../Imgs/logo_red.png";
 
-const LoginPage = () => {
-  let { requests } = useContext(GlobalStateContext)
-  const history = useHistory()
-  const [form, onChange] = useForm(initialForm)
+const Login = () => {
+  const history = useHistory();
+  const [showPassword, setShowPassword] = useState(false);
+  const [form, formHandle] = useForm({ email: "", password: "" });
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-
-    if (token) {
-      goToLogin(history)
-    }
-  }, [history])
-
-  const login = async () => {
-    const body = {
-      'email': form.email,
-      'password': form.password
-    }
-
-    try {
-      const res = await axios.post(`${baseUrl}/login`, body)
-      localStorage.setItem('token', res.data.token)
-      goToFeed(history)
-    } catch (err) {
-      alert(`❌ ${err.response.data.message}`)
-
-    }
-  }
-
-  const onSubmitForm = (e) => {
-    e.preventDefault()
-    login()
-  }
-
+  const onSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post(`${baseUrl}/login`, { email: form.email, password: form.password })
+      .then((res) => {
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('user', JSON.stringify(res.data.user));
+        goToFeed(history)
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
+  };
 
   return (
-    <div>
-      <h1>Acessar Conta </h1>
-      <button onClick={requests.logout}>Logout</button>
-      <form onSubmit={onSubmitForm}>
-        <input
-          type={'email'}
-          name={'email'}
+    <MainContainer>
+      <Logo src={logo_img} />
+      <Title>Entrar</Title>
+
+      <StyledForm onSubmit={onSubmit}>
+        <TextField
+          variant="outlined"
+          name="email"
+          label="E-mail"
+          placeholder="email@email.com"
           value={form.email}
-          onChange={onChange}
-          placeholder={"E-mail"}
-          pattern={"[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$"}
-          title={"E-mail inválido"}
+          onChange={formHandle}
           required
+          type="email"
         />
-        <input
-          type={'password'}
-          name={'password'}
+        <TextField
+          variant="outlined"
+          name="password"
+          label="Senha"
+          type={showPassword ? "text" : "password"}
+          placeholder="Mínimo de 6 caracteres"
           value={form.password}
-          onChange={onChange}
-          placeholder={"Senha"}
-          pattern={"\\w{6,}"}
-          title={"A senha deve conter no mínimo 6 caracteres"}
+          onChange={formHandle}
           required
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
+        <Button type="submit" color="primary" variant="contained">
+          Entrar
+        </Button>
+        <Button onClick={() => goToRegister(history)}>
+          Não possui cadastro? clique aqui.
+        </Button>
+      </StyledForm>
+    </MainContainer>
+  );
+};
 
-        <button main>Entrar</button>
-      </form>
-      <form register> Novo por aqui? <p link onClick={() => goToRegister(history)}> Crie sua conta</p></form>
-    </div>
-  )
+export default Login;
 
-
-}
-
-export default LoginPage;
