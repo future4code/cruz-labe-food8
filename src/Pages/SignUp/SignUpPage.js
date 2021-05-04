@@ -11,7 +11,7 @@ import InputMask from "react-input-mask";
 import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { baseUrl } from "../../Contants/urls";
+import { baseUrl } from "../../Constants/urls";
 import MenuBack from "../../Components/MenuBack"
 import { goToFeed } from "../../Router/coordinator";
 import { useHistory } from "react-router-dom";
