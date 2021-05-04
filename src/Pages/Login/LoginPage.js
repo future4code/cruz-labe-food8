@@ -40,7 +40,7 @@ const StyledForm = styled.form`
   gap: 20px;
 `;
 
-const Login = () => {
+const LoginPage = () => {
   const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
   const [form, formHandle] = useForm({ email: "", password: "" });
@@ -104,4 +104,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

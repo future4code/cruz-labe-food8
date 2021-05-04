@@ -30,6 +30,6 @@ export const goToCart = (history) => {
     history.push(`/cart`)
 }
 
-export const gotToLastPage = (history) => {
+export const goToLastPage = (history) => {
     history.goBack()
 }
