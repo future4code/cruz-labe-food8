@@ -4,7 +4,7 @@ import { axiosConfig, baseUrl } from '../../Constants/urls';
 import { useParams } from 'react-router-dom'
 import ProductsCard from './ProductsCard'
 import axios from 'axios'
-import { gotToLastPage} from '../../Router/coordinator'
+import { goToLastPage} from '../../Router/coordinator'
 import {ButtonBack, Title, HeaderContainer } from './Styled'
 import back from '../../Imgs/back.png'
 
@@ -53,7 +53,7 @@ function CardRestaurant() {
     return (
         <div>
             <HeaderContainer>
-                <ButtonBack onClick={() => gotToLastPage()}> <img src={back} alt='back' /> </ButtonBack>
+                <ButtonBack onClick={() => goToLastPage()}> <img src={back} alt='back' /> </ButtonBack>
                 <Title>Busca</Title>
                 <p></p>
             </HeaderContainer>
