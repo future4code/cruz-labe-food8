@@ -50,7 +50,10 @@ export const ButtonBack = styled.button`
   border: none;
   width: 1.44rem;
   height: 1.5rem;
-  font-size: 100%; 
+  font-size: 1rem;
+  font-weight: bold;
+  align-self: center; 
+  
 `
 export const ContainerFilter = styled.div `
   width: 22.5rem;
