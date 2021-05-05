@@ -1,19 +1,37 @@
 import React, { useState, useContext, useEffect } from 'react'
+import { useHistory } from "react-router";
 import { useForm } from "../../Hooks/useForm";
 import { initialForm } from "../../Constants/inputs";
 import { Icon, ButtonBack, InputSearch, ContainerSearch, HeaderContainer, Title, ContainerFilter } from './Styled'
 import GlobalStateContext from "../../GlobalState/GlobalStateContext";
 import back from '../../Imgs/back.png'
+import { Restaurant } from '@material-ui/icons';
+import { axiosConfig, baseUrl } from '../../Constants/urls';
+import axios from 'axios'
 
 function Search() {
     const [form, onChange, resetForm] = useForm(initialForm)
     let { states } = useContext(GlobalStateContext)
     const restaurants = states.restaurants
     const [searchOpen, setSearchOpen] = useState(false)
-    const [filter, setFilter] = useState(restaurants)
+    const [products, setProducts] = useState([])
+    const [productsName, setProductsName] = useState([])
+    const [filter, setFilter] = useState()
+
+    useEffect(() => {
+        inicialStateFilter()
+        // getProducts()
+    }, [restaurants])
+
+    const inicialStateFilter = () => {
+        if (form.inputSearch === '') {
+            setFilter(states && states.restaurants)
+        }
+    }
 
     const onClickCategory = (value) => {
         form.category = value
+        filterName()
         setSearchOpen(true)
     }
 
@@ -31,6 +49,7 @@ function Search() {
     const sendForm = (e) => {
         e.preventDefault()
         filterName()
+        // filterProduct()
         resetForm()
         setSearchOpen(true)
     }
@@ -49,7 +68,7 @@ function Search() {
 
             .filter((restaurants) => {
                 if (form.category) {
-                    return (form.category && restaurants.category.toLowerCase().includes(form.category.toLowerCase()))
+                    return (form.category && restaurants.category.includes(form.category))
                 } else {
                     return restaurants
                 }
@@ -59,6 +78,48 @@ function Search() {
             setFilter(filtered)
         )
     }
+
+    // const getProducts = async () => {
+    //     try {
+    //         if (restaurants) {
+    //             for (let id = 1; id < restaurants.length; id++) {
+    //                 const res = await axios.get(`${baseUrl}/restaurants/${id}`, axiosConfig)
+    //                 setProducts(products.push(res.data.restaurant.products))
+    //                 for (let i = 0; i <= products.length; i++) {
+    //                     setProductsName(productsName.push(res.data.restaurant.products[i]))
+    //                 }
+    //                 console.log(productsName)
+    //             }
+    //         }
+    //     } catch (err) {
+    //         alert(`❌ ${err.response.data.message}`)
+    //     }
+    // }
+    // console.log(productsName)
+    // const filterProduct = () => {
+    //     getProducts()
+    //     for (let i = 0; i <= products.length; i++) {
+    //         const filtered = productsName
+
+    //             .filter((products) => {
+    //                 if (form.inputSearch) {
+
+    //                     console.log('aqui')
+    //                     return (form.inputSearch && products[i].name.toLowerCase().includes(form.inputSearch.toLowerCase()))
+
+    //                 } else {
+    //                     console.log('aqui nao')
+    //                     return restaurants
+    //                 }
+    //             })
+
+    //         return (
+    //             setFilter(filtered)
+    //         )
+    //     }
+    // }
+    
+    console.log(filter)
 
     const Header = () => {
 
@@ -99,7 +160,6 @@ function Search() {
         }
 
     }
-
 
     return (
         <div>

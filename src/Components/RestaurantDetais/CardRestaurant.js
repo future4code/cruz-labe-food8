@@ -11,8 +11,9 @@ import {Card, CardActionArea, CardContent, CardMedia, Typography } from '@materi
 
 
 function CardRestaurant() {
-    const classes = useStyles();
     useProtectedPage()
+    const classes = useStyles();
+    const history = useHistory()
     const pathParams = useParams()
     const restaurantId = pathParams.restaurantId
     const [data, setData] = useState({})
@@ -63,8 +64,8 @@ const voltar = () => {
     return (
         <div>
             <HeaderContainer>
-                <ButtonBack onClick={voltar}> <img src={back} alt='back' /> </ButtonBack>
-                <Title>Restaurante</Title>
+                <ButtonBack onClick={() => goToLastPage(history)}> <img src={back} alt='back' /> </ButtonBack>
+                <Title restaurant>Restaurante</Title>
                 <p></p>
             </HeaderContainer>
             {name ?
