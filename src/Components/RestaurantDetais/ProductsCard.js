@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { quantity } from "../../Constants/options";
 import { useForm } from "../../Hooks/useForm";
 import { initialForm } from "../../Constants/inputs";
+import { useStyles, ButtonAdd, ContainerOpacity, Quantity, ContainerFloat, Select, ButtonAddCart } from './Styled'
+import { Typography, CardContent, CardMedia, Card } from '@material-ui/core'
 
 function CardRestaurant(props) {
+    const classes = useStyles();
     const { photoUrl, name, description, price } = props.product || {}
-    const [form, onChange] = useForm(initialForm)
-    const [selectedQuantity, setSelectedQuantity] = useState("")
+    const [form, onChange, resetForm] = useForm(initialForm)
     const [quantityAlert, setQuantityAlert] = useState(false)
-
 
     const openQuantity = () => {
         setQuantityAlert(true)
@@ -19,8 +20,8 @@ function CardRestaurant(props) {
         setQuantityAlert(false)
     }
 
-    const removeItem = () => {
-        setSelectedQuantity(0)
+    const removeItems = () => {
+        resetForm()
     }
 
     const renderPrice = () => {
@@ -42,58 +43,60 @@ function CardRestaurant(props) {
     const renderQuantity = () => {
         if (quantityAlert) {
             return (
-                <>
-                    <p> Selecione a quantidade desejada </p>
-                    <form onSubmit={sendForm}>
-                        <select
-                            name={"quantity"}
-                            value={form.quantity}
-                            onChange={onChange}
-                            required
-                        >
-                            <option value="" >0</option>
-                            {quantity.map((quantity) => {
-                                return <option value={quantity} key={quantity}>{quantity}</option>
-                            })}
-                        </select>
-                        <button> ADICIONAR AO CARRINHO</button>
-                    </form>
-                </>
+                <ContainerOpacity>
+                    <ContainerFloat>
+                        <Typography className={classes.quantity} component="p"> Selecione a quantidade desejada </Typography>
+                        <form onSubmit={sendForm}>
+                            <Select
+                                name={"quantity"}
+                                value={form.quantity}
+                                onChange={onChange}
+                                required
+                            >
+                                <option value="" >0</option>
+                                {quantity.map((quantity) => {
+                                    return <option value={quantity} key={quantity}>{quantity}</option>
+                                })}
+                            </Select>
+                            <ButtonAddCart> ADICIONAR AO CARRINHO</ButtonAddCart>
+                        </form>
+                    </ContainerFloat>
+                </ContainerOpacity>
             )
         }
     }
 
     return (
         <div>
-            <div>
-                <img src={photoUrl} />
-                <div>
-                    <h1>{name}</h1>
-                    <p>{description}</p>
+            <Card className={classes.containerProducts}>
+                <CardMedia
+                    className={classes.mediaProduct}
+                    image={photoUrl}
+                    title={name}
+                />
+                <CardContent>
+                    {form.quantity ? <Quantity remove quantity>{form.quantity}</Quantity> : <></>}
+                    <Typography className={classes.titleProduct} color='primary' component="p">{name} </Typography>
+                    <Typography className={classes.description} component="p">{description}</Typography>
 
-                    {renderPrice()}
+                    <Typography className={classes.price} component="p">{renderPrice()}</Typography>
 
-                    {selectedQuantity ? <button>{selectedQuantity}</button> : <></>}
 
-                    {selectedQuantity ?
-                        <button
-                            onClick={removeItem}
-                            borderColor={"#e02020"}
-                            color={"#e02020"}
-                        >
-                            Remover
-                    </button>
+
+                    {form.quantity ?
+
+                        <ButtonAdd remove onClick={removeItems}>
+                            remover
+                    </ButtonAdd>
+
                         :
-                        <button
-                            onClick={openQuantity}
-                            borderColor={"#5cb646"}
-                            color={"#5cb646"}
-                        >
-                            Adicionar
-                    </button>
+                        <ButtonAdd onClick={openQuantity}>
+                            adicionar
+                    </ButtonAdd>
                     }
-                </div>
-            </div>
+
+                </CardContent>
+            </Card>
             {renderQuantity()}
         </div>
 

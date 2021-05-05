@@ -4,15 +4,17 @@ import { axiosConfig, baseUrl } from '../../Constants/urls';
 import { useParams } from 'react-router-dom'
 import ProductsCard from './ProductsCard'
 import axios from 'axios'
+import { ButtonBack, Title, HeaderContainer, ContainerInformation, useStyles } from './Styled'
 import { goToLastPage} from '../../Router/coordinator'
-import {ButtonBack, Title, HeaderContainer } from './Styled'
 import back from '../../Imgs/back.png'
+import {Card, CardActionArea, CardContent, CardMedia, Typography } from '@material-ui/core';
+
 
 function CardRestaurant() {
+    const classes = useStyles();
     useProtectedPage()
-    // const pathParams = useParams()
-    // const restaurantId = pathParams.restaurantId
-    // const [data] = useRequestData({}, `${baseUrl}/restaurants/2`, axiosConfig)
+    const pathParams = useParams()
+    const restaurantId = pathParams.restaurantId
     const [data, setData] = useState({})
     const { shipping, name, logoUrl, category, address, deliveryTime } = data || {}
     const [product, setProduct] = useState([])
@@ -24,7 +26,7 @@ function CardRestaurant() {
 
     const getRestaurant = async () => {
         try {
-            const res = await axios.get(`${baseUrl}/restaurants/2`, axiosConfig)
+            const res = await axios.get(`${baseUrl}/restaurants/${restaurantId}`, axiosConfig)
             setData(res.data.restaurant)
             setProduct(res.data.restaurant.products)
             getCategories()
@@ -50,26 +52,48 @@ function CardRestaurant() {
         setProductsCategories(categories)
     }
 
+    const timeDelivery = deliveryTime + 15
+
     return (
         <div>
             <HeaderContainer>
                 <ButtonBack onClick={() => goToLastPage()}> <img src={back} alt='back' /> </ButtonBack>
-                <Title>Busca</Title>
+                <Title>Restaurante</Title>
                 <p></p>
             </HeaderContainer>
             {name ?
                 <>
-                    <img src={logoUrl} alt={name} />
-                    <h3>{name}</h3>
-                    <p>{category}</p>
-                    <p>{deliveryTime} min</p>
-                    <p> frete R$ {shipping},00</p>
-                    <p>{address}</p>
+                    <Card className={classes.root}>
+                        <CardActionArea>
+                            <CardMedia
+                                className={classes.media}
+                                image={logoUrl}
+                                title={name}
+                            />
+                            <CardContent>
+                                <Typography className={classes.title} color='primary' variant="p" component="p">{name} </Typography>
+
+                                <Typography className={classes.information} component="p">
+                                {category}
+                                </Typography>
+                                <ContainerInformation frete>
+                                    <Typography className={classes.information} component="p">
+                                        {deliveryTime} - {timeDelivery} min
+                                        </Typography>
+                                    <Typography className={classes.information} component="p">
+                                        Frete R${shipping},00
+                                    </Typography>
+                                </ContainerInformation>
+                                <Typography className={classes.address} component="p">{address}</Typography>
+
+                            </CardContent>
+                        </CardActionArea>
+                    </Card>
 
                     {productsCategories.map((category) => {
                         return (
-                            <div>
-                                <h1> {category} </h1>
+                            <>
+                                <Typography className={classes.categoryTitle} component="p"> {category} </Typography>
                                 {product.map((product) => {
                                     if (product.category === category) {
                                         return (
@@ -82,8 +106,7 @@ function CardRestaurant() {
                                     }
 
                                 })}
-
-                            </div>
+                            </>
                         )
                     })}
 
@@ -92,7 +115,7 @@ function CardRestaurant() {
                 : <p>Carregando....</p>
             }
 
-        </div>
+        </div >
     );
 }
 
