@@ -1,26 +1,9 @@
-import styled from 'styled-components'
 import React from 'react';
 import { useHistory } from 'react-router';
-import { goToLogin, gotToLastPage } from '../../Router/coordinator';
-
-
-const DivMaster = styled.div`
-  background-color:#e8222e;
-  width:100vw;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-`
-
-const ImageInitial = styled.img`
-  width:126px;
-  height:65px;
-  
-`
+import { goToLogin } from '../../Router/coordinator';
+import {DivMaster, ImageInitial} from './Styled'
 
 const HomePage = () => {
-
   const history = useHistory()
 
   const go = () => {
