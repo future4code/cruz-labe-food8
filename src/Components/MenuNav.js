@@ -2,6 +2,9 @@ import React from "react";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 import { goToCart, goToFeed, goToProfile } from "../Router/coordinator";
+import home from "../Imgs/homepage.svg";
+import avatar from "../Imgs/avatar.svg";
+import cart from "../Imgs/shopping-cart.svg";
 
 const Footer = styled.footer`
   width: 100vw;
@@ -18,8 +21,14 @@ const DivIcons = styled.div`
   height: 3.062rem;
   padding: 0.625rem 2.875rem 0.625rem 2.938rem;
 `;
+const GreyIcon = styled.img`
+  filter: brightness(0) invert(0.5);
+`;
+const RedIcon = styled.img`
+  filter: grayscale(100%) brightness(40%) sepia(100%) hue-rotate(-50deg) saturate(600%) contrast(0.8);
+`;
 
-function MenuNav() {
+function MenuNav(props) {
   const history = useHistory();
 
   const goFeed = () => {
@@ -37,22 +46,13 @@ function MenuNav() {
   return (
     <Footer>
       <DivIcons>
-        <img
-          src="https://cdn.zeplin.io/5dd5ab8e5fb2a0060f81698f/assets/E718CCC7-08DF-4BEA-B3D1-8DCB3E8A3BA5.svg"
-          onClick={goFeed}
-        ></img>
+        {props.home ? <img src={home} onClick={goFeed}></img> : <GreyIcon src={home} onClick={goFeed}></GreyIcon>}
       </DivIcons>
       <DivIcons>
-        <img
-          src="https://cdn.zeplin.io/5dd5ab8e5fb2a0060f81698f/assets/31E0BDE3-26B3-421A-AEC5-883D098413D6.svg"
-          onClick={goCart}
-        ></img>
+        {props.cart ? <RedIcon src={cart} onClick={goCart}></RedIcon> : <GreyIcon src={cart} onClick={goCart}></GreyIcon>}
       </DivIcons>
       <DivIcons>
-        <img
-          src="https://cdn.zeplin.io/5dd5ab8e5fb2a0060f81698f/assets/3725C74F-82A8-4E32-9948-8CBFC09C877F.svg"
-          onClick={goProfile}
-        ></img>
+        {props.profile ? <RedIcon src={avatar} onClick={goProfile}></RedIcon> : <GreyIcon src={avatar} onClick={goProfile}></GreyIcon>}
       </DivIcons>
     </Footer>
   );
