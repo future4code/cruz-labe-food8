@@ -24,9 +24,6 @@ const DivIcons = styled.div`
 const GreyIcon = styled.img`
   filter: brightness(0) invert(0.5);
 `;
-const RedIcon = styled.img`
-  filter: grayscale(100%) brightness(40%) sepia(100%) hue-rotate(-50deg) saturate(600%) contrast(0.8);
-`;
 
 function MenuNav(props) {
   const history = useHistory();
@@ -49,10 +46,10 @@ function MenuNav(props) {
         {props.home ? <img src={home} onClick={goFeed}></img> : <GreyIcon src={home} onClick={goFeed}></GreyIcon>}
       </DivIcons>
       <DivIcons>
-        {props.cart ? <RedIcon src={cart} onClick={goCart}></RedIcon> : <GreyIcon src={cart} onClick={goCart}></GreyIcon>}
+        {props.cart ? <img src={cart} onClick={goCart}></img> : <GreyIcon src={cart} onClick={goCart}></GreyIcon>}
       </DivIcons>
       <DivIcons>
-        {props.profile ? <RedIcon src={avatar} onClick={goProfile}></RedIcon> : <GreyIcon src={avatar} onClick={goProfile}></GreyIcon>}
+        {props.profile ? <img src={avatar} onClick={goProfile}></img> : <GreyIcon src={avatar} onClick={goProfile}></GreyIcon>}
       </DivIcons>
     </Footer>
   );
