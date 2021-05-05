@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useProtectedPage } from '../../Hooks/useProtectedPage'
 import { axiosConfig, baseUrl } from '../../Constants/urls';
-import { useParams, useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import ProductsCard from './ProductsCard'
 import axios from 'axios'
 import { ButtonBack, Title, HeaderContainer, ContainerInformation, useStyles } from './Styled'
@@ -54,6 +54,12 @@ function CardRestaurant() {
     }
 
     const timeDelivery = deliveryTime + 15
+
+const history = useHistory()
+
+const voltar = () => {
+    history.goBack()
+}
 
     return (
         <div>

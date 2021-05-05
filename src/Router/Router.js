@@ -30,7 +30,7 @@ function Router() {
 
         <Route exact path="/feed">
           <FeedPage />
-          <MenuNav />
+          <MenuNav home />
         </Route>
 
         <Route exact path="/feed/:restaurantId">
@@ -39,7 +39,7 @@ function Router() {
 
         <Route exact path="/profile">
           <ProfilePage />
-          <MenuNav />
+          <MenuNav profile />
         </Route>
 
         <Route exact path="/profile/address">
@@ -52,7 +52,7 @@ function Router() {
 
         <Route exact path="/cart">
           <CartPage />
-          <MenuNav />
+          <MenuNav cart/>
         </Route>
 
         <Route>
