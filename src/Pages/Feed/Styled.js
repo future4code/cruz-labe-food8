@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const DivProducts = styled.div`
-    background-color:blue;
+    background-color:wheat;
     width: 22.5rem;
     height: 11.75rem;
     margin: 3.125rem 0 0;
