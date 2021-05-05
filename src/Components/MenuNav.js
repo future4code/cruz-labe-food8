@@ -10,7 +10,8 @@ const Footer = styled.footer`
   width: 100vw;
   border-top: solid 0.5px;
   border-color: #b8b8b8;
-  position: relative;
+  position: fixed;
+  background-color: white;
   bottom: 0;
   display: flex;
   justify-content: space-between;
