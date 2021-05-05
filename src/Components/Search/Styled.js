@@ -3,23 +3,22 @@ import styled from "styled-components";
 
 export const Icon = styled.img`
   position: absolute;
+  left: 1rem;
+  top: 4.2rem;
 `
-// export const ContainerSearch = styled.div`
-//   width: 20.5rem;
-//   height: 3.5rem;
-//   padding: 1rem 0.503rem 1rem 1.063rem;
-//   border-radius: 2px;
-// `
 
 export const InputSearch = styled.input`
-  width: 20.5rem;
-  height: 3.5rem;
-  padding: 1rem 0.503rem 1rem 1.063rem;
+  width: 19.4rem;
+  height: 1.5rem;
+  padding: 1.1rem 0.503rem 1rem 2.5rem;
   border-radius: 2px;
   border: solid 1px #b8b8b8;
   display:flex;
   align-items:center;
-  margin-left:0.5rem;
+  margin:0.5rem;
+  color:#d0d0d0;
+  font-size: 1rem;
+  font-family: roboto;
 `
 
 export const HeaderContainer = styled.header`
@@ -56,13 +55,22 @@ export const ButtonBack = styled.button`
   
 `
 export const ContainerFilter = styled.div `
-  width: 22.5rem;
-  height: 2.625rem;
-  margin: 0.5rem 0 0;
+  width: 21rem;
+  height: 1.5rem;
+  margin: 0.5rem 0 0.5rem 1rem;
   padding: 0.75rem 0 0.75rem 1rem;
   overflow:scroll;
   overflow-y: hidden;
   display:flex;
   justify-content:space-between;
   align-items:center;
+`
+
+export const ButtonOptions = styled.button `
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-family: Roboto;
+  color:  ${props => props.red ? '#e8222e' : 'black'};
+  font-weight:border-left;
 `

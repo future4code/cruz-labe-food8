@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useProtectedPage } from '../../Hooks/useProtectedPage'
 import { axiosConfig, baseUrl } from '../../Constants/urls';
-import { useParams, useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import ProductsCard from './ProductsCard'
 import axios from 'axios'
 import { ButtonBack, Title, HeaderContainer, ContainerInformation, useStyles } from './Styled'
-import { goToLastPage} from '../../Router/coordinator'
+import { goToLastPage } from '../../Router/coordinator'
 import back from '../../Imgs/back.png'
-import {Card, CardActionArea, CardContent, CardMedia, Typography } from '@material-ui/core';
+import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@material-ui/core';
 
 
 function CardRestaurant() {
@@ -55,11 +55,16 @@ function CardRestaurant() {
 
     const timeDelivery = deliveryTime + 15
 
+    const back = () => {
+        history.goBack()
+    }
+
     return (
         <div>
             <HeaderContainer>
-                <ButtonBack onClick={() => goToLastPage(history)}> <img src={back} alt='back' /> </ButtonBack>
+                <ButtonBack onClick={() => back()}> <img src={back} alt='back' /> </ButtonBack>
                 <Title restaurant>Restaurante</Title>
+
                 <p></p>
             </HeaderContainer>
             {name ?
@@ -75,7 +80,7 @@ function CardRestaurant() {
                                 <Typography className={classes.title} color='primary' variant="p" component="p">{name} </Typography>
 
                                 <Typography className={classes.information} component="p">
-                                {category}
+                                    {category}
                                 </Typography>
                                 <ContainerInformation frete>
                                     <Typography className={classes.information} component="p">
