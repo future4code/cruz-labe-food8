@@ -62,7 +62,6 @@ export const ContainerFilter = styled.div `
   padding: 0.75rem 0 0.75rem 1rem;
   overflow:scroll;
   overflow-y: hidden;
-  overflow-x: hidden;
   display:flex;
   justify-content:space-between;
   align-items:center;

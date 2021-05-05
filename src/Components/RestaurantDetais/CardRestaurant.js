@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useProtectedPage } from '../../Hooks/useProtectedPage'
 import { axiosConfig, baseUrl } from '../../Constants/urls';
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import ProductsCard from './ProductsCard'
 import axios from 'axios'
 import { ButtonBack, Title, HeaderContainer, ContainerInformation, useStyles } from './Styled'
@@ -11,8 +11,9 @@ import {Card, CardActionArea, CardContent, CardMedia, Typography } from '@materi
 
 
 function CardRestaurant() {
-    const classes = useStyles();
     useProtectedPage()
+    const classes = useStyles();
+    const history = useHistory()
     const pathParams = useParams()
     const restaurantId = pathParams.restaurantId
     const [data, setData] = useState({})
@@ -54,11 +55,17 @@ function CardRestaurant() {
 
     const timeDelivery = deliveryTime + 15
 
+const history = useHistory()
+
+const voltar = () => {
+    history.goBack()
+}
+
     return (
         <div>
             <HeaderContainer>
-                <ButtonBack onClick={() => goToLastPage()}> <img src={back} alt='back' /> </ButtonBack>
-                <Title>Restaurante</Title>
+                <ButtonBack onClick={() => goToLastPage(history)}> <img src={back} alt='back' /> </ButtonBack>
+                <Title restaurant>Restaurante</Title>
                 <p></p>
             </HeaderContainer>
             {name ?
