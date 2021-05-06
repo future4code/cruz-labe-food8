@@ -20,14 +20,14 @@ const GlobalStateProvider = (props) => {
   const [productsCategories, setProductsCategories] = useState([])
   const [product, setProduct] = useState([])
   const [cartProducts, setCartProducts] = useState([])
-  const [id, setId] =useState()
-  const [cart, setCart] =useState()
+  const [id, setId] = useState()
+  const [order, setOrder] = useState({})
 
   useEffect(() => {
     getEditAddress()
-    // getRestaurant()
     getRestaurants()
-  }, [])
+    getOrder()
+  }, [cartProducts])
 
   const getRestaurants = async () => {
     try {
@@ -37,6 +37,7 @@ const GlobalStateProvider = (props) => {
       alert(`❌ ${err.response.data.message}`)
     }
   }
+
 
   const getRestaurantDetail = async (restaurantId) => {
     try {
@@ -62,19 +63,19 @@ const GlobalStateProvider = (props) => {
       })
       .filter(onlyUnique)
 
+    //       Object.getOwnPropertyNames()
+    // includes
     setProductsCategories(categories)
   }
 
-  const postOrder = async (restaurantId) => {
+  const postOrder = async () => {
     const body = {
-      products: [{
-        id: form.id,
-        quantity: form.quantity
-      }],
+      products: cartProducts,
       paymentMethod: form.paymentMethod
     }
     try {
-      await axios.post(`${baseUrl}/restaurants/${restaurantId}/order`, body, axiosConfig)
+      await axios.post(`${baseUrl}/restaurants/${id}/order`, body, axiosConfig)
+      alert("Pedido recebido, já está em preparo")
     } catch (err) {
       alert(`❌ ${err.response.data.message}`)
     }
@@ -123,38 +124,50 @@ const GlobalStateProvider = (props) => {
     };
   }
 
-  const addProduct = (product, quantity, idPath) => {
+  const addProduct = (id, product, quantity, idPath) => {
+    const newCartList = [...cartProducts]
 
-    const cartList = [{
-      id: product.id,
-      product: product.name,
-      price: product.price,
-      photoUrl: product.photoUrl,
-      description: product.description,
-      quantity: Number(quantity),
-    }];
-    // const newCartList = JSON.parse(localStorage.getItem("cart"));
-    const newCartList = [...cartList]
-    newCartList.push(cartList);    
+    if (quantity > 0) {
+      product.map((product) => {
+        if (id === product.id) {
+          newCartList.push({
+            id: product.id,
+            product: product.name,
+            price: product.price,
+            photoUrl: product.photoUrl,
+            description: product.description,
+            quantity: Number(quantity),
+          })
+        }
+      }
+
+      )
+    }
 
     setId(idPath);
-    localStorage.setItem("cart", JSON.stringify(newCartList));
-    setCart(window.localStorage.getItem('cart'))
-    setCartProducts(cart);
+    setCartProducts(newCartList);
   };
 
-  const removeProduct = () => {
+  const removeProduct = (id) => {
     const newCartList = cartProducts.filter(prod => {
-        return prod.id !== states.product.id
+      return prod.id !== id
     })
-    setCartProducts(cart)
+    setCartProducts(newCartList)
+  }
 
-    // localStorage.setItem("cart", JSON.stringify(newCartList));
-}
+  const getOrder = async () => {
+    try {
+      const res = await axios.get(`${baseUrl}/active-order`, axiosConfig)
+      setOrder(res.data.order)
+    } catch (err) {
+      alert(`❌ ${err.response.data.message}`)
+    }
+  }
 
-  const states = { cartProducts, productsCategories, product, dataRestaurant, restaurants, editProfile, editAddress, addressUpdated };
+
+  const states = { order, cartProducts, productsCategories, product, dataRestaurant, restaurants, editProfile, editAddress, addressUpdated };
   const setters = { setCartProducts, setEditProfile, setEditAddress, setAddressUpdated };
-  const requests = { removeProduct, addProduct, getCategories, getRestaurantDetail, postOrder, getRestaurants, logout, putEditProfile, putEditAddress };
+  const requests = { getOrder, removeProduct, addProduct, getCategories, getRestaurantDetail, postOrder, getRestaurants, logout, putEditProfile, putEditAddress };
 
   const baseData = { states, setters, requests };
 

@@ -73,3 +73,39 @@ export const ButtonOptions = styled.button `
   color:  ${props => props.red ? '#e8222e' : 'black'};
   font-weight:border-left;
 `
+export const ContainerFloat = styled.div`
+  position: fixed;
+  display: flex;
+  align-items: center;
+  /* flex-direction: column; */
+  background-color: #e8222e;
+  width:24rem;
+  height:7.37rem;
+  top: 30rem;
+  margin:0;
+  padding: 0.688rem 0 4.25rem;
+`
+
+export const Text = styled.p`
+  font-size: 1rem;
+  color:#ffffff;
+  letter-spacing: -0.39px;
+  font-family: 'roboto';
+  margin: 0.5rem 0;
+`
+export const TextName = styled.p`
+  font-size: 1rem;
+  color:black;
+  letter-spacing: -0.39px;
+  font-family: 'roboto';
+  margin: 0.5rem 0;
+  font-weight: ${props => props.subTotal ? 'bold' : ''};
+`
+
+export const ContainerImg = styled.div`
+ flex-direction: row;
+ margin: 0 1.5rem;
+`
+export const ContainerText = styled.div`
+ flex-direction: column;
+`

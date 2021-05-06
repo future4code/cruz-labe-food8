@@ -1,5 +1,5 @@
 import { Button } from "@material-ui/core";
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useProtectedPage } from "../../Hooks/useProtectedPage";
 import {
   MainContainer,
@@ -9,99 +9,91 @@ import {
   Payout,
   PayoutMethod,
   PriceContainer,
-  Price
+  Price,
+  Restaurant,
+  Shipping
 } from './Styled'
 import { FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
 import ProductCart from "./ProductCart";
 import { useForm } from "../../Hooks/useForm";
+import axios from 'axios'
+import {baseUrl, axiosConfig} from '../../Constants/urls'
 import GlobalStateContext from '../../GlobalState/GlobalStateContext'
 import { initialForm } from "../../Constants/inputs";
 
+
 function CartPage() {
   useProtectedPage();
-  const [form, onChange] = useForm(initialForm)
+  const [form] = useForm(initialForm)
   const { states, requests } = useContext(GlobalStateContext)
   const { neighbourhood, number } = states.editAddress || {}
   const { shipping, name, logoUrl, category, address, deliveryTime } = states.dataRestaurant || {}
   const cartProducts = states.cartProducts
+  const [paymentMethod, setPaymentMethod] = useState('money');
 
-  const sendForm = (e) => {
-    e.preventDefault()
+  const sendOrder = () => {
+    requests.postOrder()
   }
+
 
   const totalValue = cartProducts.reduce((total, product) => {
-    return total + (product.price * product.quantity) + { shipping };
+    return total + (product.price * product.quantity) + shipping
   }, 0);
-
-  const renderPrice = () => {
-    if (totalValue % 1 === 0) {
-      return (
-        <p>
-          R${cartProducts.price}.00
-        </p>
-      )
-    } else {
-      return (
-        <p>
-          R${cartProducts.price}0
-        </p>
-      )
-    }
-  }
 
   const sumDeliveryTime = deliveryTime + 15
 
-  const limpar = () => {
-    window.localStorage.removeItem("cart");
+  const productsCards = () => {
+    return (
+      <>
+        <Restaurant>
+          <h4>{name}</h4>
+          <p>{address}</p>
+          <p>{deliveryTime} - {sumDeliveryTime} min</p>
+        </Restaurant>
+        <ProductCart paymentMethod={paymentMethod} />
+
+      </>
+    );
   }
 
   return (
     <>
-    <button onClick={() => {limpar()}}>Limpar local</button>
       <Title>Meu carrinho</Title>
       <AdressContainer>
         Endereço de entrega
         <p>{neighbourhood}, {number}</p>
       </AdressContainer>
       <MainContainer>
-        {name ?
-          <>
-            <p>{name}</p>
-            <p>{address}</p>
-            <p>{deliveryTime} - {sumDeliveryTime} min</p>
-            <OrdersContainer>
-              <ProductCart paymentMethod={form.paymentMethod} />
-            </OrdersContainer>
-          </>
-          : <p>Carrinho vazio</p>
-        }
+        <OrdersContainer>
+          {cartProducts.length
+            ? productsCards()
+            : "carrinho vazio"}
+        </OrdersContainer>
         <Payout>
-          <p>Frete R${shipping},00</p>
+          <Shipping>
+            <p>Frete R${shipping},00</p>
+          </Shipping>
           <PriceContainer>
             <p>SUBTOTAL</p>
-            <Price>R${renderPrice()}</Price>
+            <Price>R${totalValue.toFixed(2)}</Price>
           </PriceContainer>
           <PayoutMethod>
             <p>Forma de pagamento</p>
           </PayoutMethod>
-          <form onSubmit={sendForm}>
-            <RadioGroup aria-label="gender" name="gender1">
-              <FormControlLabel
-                value={form.paymentMethod}
-                onChange={onChange}
-                control={<Radio color="primary" />}
-                label="Dinheiro"
-              />
-              <FormControlLabel
-                value={form.paymentMethod}
-                onChange={onChange}
-                control={<Radio color="primary" />}
-                label="Cartão de crédito"
-              />
-            </RadioGroup>
-          </form>
+          <RadioGroup value={form.paymentMethod = paymentMethod} onChange={(e) => { setPaymentMethod(e.target.value) }}>
+            <FormControlLabel
+              value="money"
+              control={<Radio color="primary" />}
+              label="Dinheiro"
+            />
+            <FormControlLabel
+              value="creditcard"
+              control={<Radio color="primary" />}
+              label="Cartão de crédito"
+            />
+          </RadioGroup>
         </Payout>
-        <Button color="primary" variant="contained">
+        <Button onClick={() => { sendOrder() }} color="primary" variant="contained">
           Confirmar
         </Button>
       </MainContainer>
@@ -109,4 +101,4 @@ function CartPage() {
   );
 }
 
-export default CartPage;
+export default CartPage

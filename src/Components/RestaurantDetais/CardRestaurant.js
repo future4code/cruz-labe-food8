@@ -14,14 +14,16 @@ function CardRestaurant() {
     useProtectedPage()
     const classes = useStyles();
     const history = useHistory()
-    const {states, requests} = useContext(GlobalStateContext)
+    const {states, requests, setters} = useContext(GlobalStateContext)
     const pathParams = useParams()
-    const restaurantId = pathParams.restaurantId
+    const restaurantId=pathParams.restaurantId
     const { shipping, name, logoUrl, category, address, deliveryTime } = states.dataRestaurant || {}
 
     useEffect(() => {
         requests.getRestaurantDetail(restaurantId)
     }, [states.productsCategories])
+
+
 
     const timeDelivery = deliveryTime + 15
 
@@ -35,7 +37,6 @@ function CardRestaurant() {
 
                 <ButtonBack onClick={() => goback()}> <img src={back} alt='back' /> </ButtonBack>
                 <Title restaurant>Restaurante</Title>
-
                 <p></p>
             </HeaderContainer>
             {name ?

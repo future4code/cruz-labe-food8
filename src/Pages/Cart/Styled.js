@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const MainContainer = styled.div`
   font-family: "Roboto";
-  padding: 10px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   padding-bottom: 4rem;
@@ -28,7 +28,9 @@ export const AdressContainer = styled.div`
   }
 `;
 
-export const OrdersContainer = styled.div``;
+export const OrdersContainer = styled.div`
+  text-align: center;
+`;
 
 export const Payout = styled.div``;
 
@@ -51,3 +53,17 @@ export const Price = styled.p`
   font-weight: 600;
 `;
 
+export const Restaurant = styled.div`
+  text-align: left;
+  h4{
+    color: red;
+    margin: 0px;
+  }
+  p{
+    color: gray;
+  }
+`
+export const Shipping = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`

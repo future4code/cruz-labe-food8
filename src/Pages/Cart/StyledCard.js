@@ -8,6 +8,7 @@ export const MainContainer = styled.div`
   font-family: 'Roboto';
   margin: 10px 0px;
   position: relative;
+  text-align:left;
 `;
 
 export const Image = styled.div`
@@ -37,7 +38,13 @@ export const Description = styled.p`
 `
 export const TotalValue = styled.p`
   font-weight: 500;
+  padding:0;
+  margin: 0
 `
+export const DivTotalValue = styled.p`
+  display: flex;
+`
+
 export const Quantity = styled.div`
   position: absolute;
   right: 0px;

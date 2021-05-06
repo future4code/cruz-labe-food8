@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import GlobalStateContext from '../../GlobalState/GlobalStateContext'
 import { useProtectedPage } from '../../Hooks/useProtectedPage'
 import { DivRestaurants, Text, Container, DivParaBorda, ImgRestaurants, DivReferencias, NomeRestaurants } from './Styled'
-import Search from '../../Components/Search/Search'
+import Search from '../Feed/Feed'
 import axios from 'axios'
 import { useHistory } from 'react-router'
 

@@ -2,19 +2,26 @@ import React, { useState, useContext, useEffect } from 'react'
 import { useHistory } from "react-router";
 import { useForm } from "../../Hooks/useForm";
 import { initialForm } from "../../Constants/inputs";
-import { Icon, ButtonBack, InputSearch, ButtonOptions, HeaderContainer, Title, ContainerFilter } from './Styled'
+import { ContainerImg, ContainerText, Text, TextName, Icon, ButtonBack, InputSearch, ButtonOptions, HeaderContainer, Title, ContainerFilter } from './Styled'
 import back from '../../Imgs/back.png'
 import { axiosConfig, baseUrl } from '../../Constants/urls';
 import axios from 'axios'
 import CardAllRestaurants from '../CardAllRestaurants/CardAllRestaurants'
+import GlobalStateContext from '../../GlobalState/GlobalStateContext'
+import { ContainerFloat } from './Styled'
+import clock from '../../Imgs/clock.png'
 
-function Search(props) {
+function Feed(props) {
     const [form, onChange, resetForm] = useForm(initialForm)
+    let { states } = useContext(GlobalStateContext)
     const restaurants = props.restaurants
     const [searchOpen, setSearchOpen] = useState(false)
     const [products, setProducts] = useState([])
     const [productsName, setProductsName] = useState([])
     const [filter, setFilter] = useState()
+    let date = new Date(states.order.expiresAt)
+    const actual = new Date()
+
 
     useEffect(() => {
         inicialStateFilter()
@@ -126,47 +133,64 @@ function Search(props) {
 
     // console.log(filter)
 
-    const Header = () => {
+    const renderOrder = () => {
+        if (states.order) {
+            return (
+                <ContainerFloat>
+                    <ContainerImg>
+                        <img src={clock} alt='relógio' />
+                    </ContainerImg>
+                    <ContainerText>
+                        <Text>Pedido em andamento</Text>
+                        <TextName>{states.order.restaurantName}</TextName>
+                        <TextName subTotal>SUBTOTAL  R${states.order.totalPrice.toFixed(2)}</TextName>
+                    </ContainerText>
+                </ContainerFloat>
+            )
+        }
+    }
+
+    const Render = () => {
 
         if (searchOpen) {
             return (
                 <>
-                    <HeaderContainer back>
-                        <ButtonBack onClick={() => onClickBack()}> <img src={back} alt='back' /> </ButtonBack>
-                        <Title>Busca</Title>
-                        <p></p>
-                    </HeaderContainer>
+                            <HeaderContainer back>
+                                <ButtonBack onClick={() => onClickBack()}> <img src={back} alt='back' /> </ButtonBack>
+                                <Title>Busca</Title>
+                                <p></p>
+                            </HeaderContainer>
 
-                    <ContainerFilter>
-                        {categoryOptions}
-                    </ContainerFilter>
-                </>
+                            <ContainerFilter>
+                                {categoryOptions}
+                            </ContainerFilter>
+                        </>
             )
         } else {
             return (
                 <>
-                    <HeaderContainer>
-                        <Title>Ifuture</Title>
-                    </HeaderContainer>
-                    <div>
-                        <form onSubmit={sendForm}>
-                            <Icon src='https://cdn.zeplin.io/5dd5ab8e5fb2a0060f81698f/assets/2B6D2876-FB2A-4EF4-8B8D-5314BF50995F.svg' alt="search" />
+                            <HeaderContainer>
+                                <Title>Ifuture</Title>
+                            </HeaderContainer>
+                            <div>
+                                <form onSubmit={sendForm}>
+                                    <Icon src='https://cdn.zeplin.io/5dd5ab8e5fb2a0060f81698f/assets/2B6D2876-FB2A-4EF4-8B8D-5314BF50995F.svg' alt="search" />
 
-                            <InputSearch
-                                type={"text"}
-                                name={"inputSearch"}
-                                value={form.inputSearch}
-                                placeholder={"Restaurante"}
-                                onChange={onChange}
-                            >
-                            </InputSearch>
+                                    <InputSearch
+                                        type={"text"}
+                                        name={"inputSearch"}
+                                        value={form.inputSearch}
+                                        placeholder={"Restaurante"}
+                                        onChange={onChange}
+                                    >
+                                    </InputSearch>
 
-                        </form>
-                    </div>
-                    <ContainerFilter>
-                        {categoryOptions}
-                    </ContainerFilter>
-                </>
+                                </form>
+                            </div>
+                            <ContainerFilter>
+                                {categoryOptions}
+                            </ContainerFilter>
+                        </>
             )
         }
 
@@ -174,12 +198,13 @@ function Search(props) {
 
     return (
         <div>
-            {Header()}
-            <CardAllRestaurants
-                restaurants={filter}
-            />
-        </div >
+                            {Render()}
+                            <CardAllRestaurants
+                                restaurants={filter}
+                            />
+                            {actual === date ? '' : renderOrder()}
+                        </div>
     )
 }
 
-export default Search
+export default Feed

@@ -1,31 +1,51 @@
 import { Button } from "@material-ui/core";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import GlobalStateContext from "../../GlobalState/GlobalStateContext";
-import {MainContainer,
+import {
+  MainContainer,
   Image,
   Data,
   Title,
   Description,
   TotalValue,
   Quantity,
-  RemoveButton} from './StyledCard'
+  RemoveButton
+} from './StyledCard'
 
-const ProductCard = () => {
-  const {states, requests} = useContext(GlobalStateContext)
+const ProductCart = () => {
+  const { states, requests } = useContext(GlobalStateContext)
   const cartProducts = states.cartProducts
 
+  const totalValue = (product) => {
+    const total = product.price * product.quantity
+    return (<TotalValue>
+      R${total.toFixed(2)}
+    </TotalValue>)
+  }
+
+  const arrayIndex = () => {
+      return cartProducts.map((cartProducts) => {
+        return (
+          <MainContainer key={cartProducts.id}>
+            <Quantity>{cartProducts.quantity}</Quantity>
+            <RemoveButton onClick={() => { requests.removeProduct(cartProducts.id) }} >Remover</RemoveButton>
+            <Image style={{ backgroundImage: `url('${cartProducts.photoUrl}')` }} />
+            <Data>
+              <Title>{cartProducts.product}</Title>
+              <Description>{cartProducts.description ? cartProducts.description : 'sem descrição'}</Description>
+              {totalValue(cartProducts)}
+            </Data>
+            </MainContainer>
+        )
+      })
+  }
+
+
   return (
-    <MainContainer>
-      <Quantity>{cartProducts.quantity}</Quantity>
-      <RemoveButton onClick={() => { requests.removeProduct()}} >Remover</RemoveButton>
-      <Image style={{backgroundImage: `url(${cartProducts.photoUrl})`}} />
-      <Data>
-        <Title>{cartProducts.name}</Title>
-        <Description>{cartProducts.description ? cartProducts.description : 'sem descrição'}</Description>
-        <TotalValue>R${cartProducts.price * cartProducts.quantity}</TotalValue>
-      </Data>
-    </MainContainer>
-  );
+    <>
+      {arrayIndex()}
+    </>
+  )
 };
 
-export default ProductCard;
+export default ProductCart;
