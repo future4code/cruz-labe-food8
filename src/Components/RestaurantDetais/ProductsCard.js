@@ -1,27 +1,34 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { quantity } from "../../Constants/options";
 import { useForm } from "../../Hooks/useForm";
 import { initialForm } from "../../Constants/inputs";
 import { useStyles, ButtonAdd, ContainerOpacity, Quantity, ContainerFloat, Select, ButtonAddCart } from './Styled'
 import { Typography, CardContent, CardMedia, Card } from '@material-ui/core'
+import GlobalStateContext from '../../GlobalState/GlobalStateContext';
 
 function CardRestaurant(props) {
     const classes = useStyles();
-    const { photoUrl, name, description, price } = props.product || {}
+    const { photoUrl, name, description, price, id } = props.product || {}
+    const { requests, setters, states } = useContext(GlobalStateContext)
     const [form, onChange, resetForm] = useForm(initialForm)
     const [quantityAlert, setQuantityAlert] = useState(false)
-
+    const cartProducts = states.cartProducts
+    
     const openQuantity = () => {
         setQuantityAlert(true)
     }
 
     const sendForm = (e) => {
         e.preventDefault()
+        // requests.postOrder(props.key)
+        form.id = id
+        requests.addProduct(props.product, form.quantity, props.restaurantId) 
         setQuantityAlert(false)
     }
 
     const removeItems = () => {
         resetForm()
+        requests.removeProduct()
     }
 
     const renderPrice = () => {

@@ -1,150 +1,105 @@
 import { Button } from "@material-ui/core";
-import React from "react";
+import React, { useContext } from "react";
 import { useProtectedPage } from "../../Hooks/useProtectedPage";
-import styled from "styled-components";
+import {
+  MainContainer,
+  Title,
+  AdressContainer,
+  OrdersContainer,
+  Payout,
+  PayoutMethod,
+  PriceContainer,
+  Price
+} from './Styled'
 import { FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
-import ProductCard from "./ProductCard";
-
-const exampleProducts = [
-  {
-    id: "CnKdjU6CyKakQDGHzNln",
-    description: "Carne",
-    price: 1,
-    photoUrl:
-      "https://static-images.ifood.com.br/image/upload/f_auto,t_high/pratos/65c38aa8-b094-413d-9a80-ddc256bfcc78/201907031404_66194495.jpg",
-    name: "Bibsfiha carne",
-    quantity: 10,
-  },
-  {
-    id: "KJqMl2DxeShkSBevKVre",
-    photoUrl:
-      "https://www.sushimanscwb.com.br/wp-content/uploads/2018/10/1579_REFRIGERANTE_LATA_-_350ml_17d2e336feb44a2696fd6cf852c41b50-1.jpeg",
-    name: "Refrigerante",
-    description: "Coca cola, Sprite ou Guaraná",
-    price: 4,
-    quantity: 10,
-  },
-  {
-    id: "SmT6MYMm8QC8riHYApzt",
-    name: "Batata Frita",
-    description: "Batata frita crocante e sequinha.",
-    price: 9.5,
-    quantity: 10,
-    photoUrl:
-      "https://static-images.ifood.com.br/image/upload/f_auto,t_high/pratos/65c38aa8-b094-413d-9a80-ddc256bfcc78/201907031409_66194560.jpg",
-  },
-  {
-    id: "V5VhD0xmsN7p1RvIDyhs",
-    name: "Beirute",
-    description: "",
-    price: 22.9,
-    quantity: 10,
-    photoUrl:
-      "https://static-images.ifood.com.br/image/upload/f_auto,t_high/pratos/65c38aa8-b094-413d-9a80-ddc256bfcc78/201907031424_66194598.jpg",
-  },
-  {
-    id: "ZrZm51AIbZ26MVAifuaJ",
-    name: "Pizza",
-    description: "",
-    price: 31.9,
-    quantity: 10,
-    photoUrl:
-      "https://static-images.ifood.com.br/image/upload/f_auto,t_high/pratos/65c38aa8-b094-413d-9a80-ddc256bfcc78/201907031245_66194219.jpg",
-  },
-];
-
-const MainContainer = styled.div`
-  font-family: "Roboto";
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 4rem;
-`;
-const Title = styled.h3`
-  font-weight: 500;
-  font-size: 1rem;
-  text-align: center;
-  border-bottom: 1px gray solid;
-  padding: 15px;
-  margin: 0px;
-  font-family: "Roboto";
-`;
-const AdressContainer = styled.div`
-  background-color: #eeeeee;
-  color: gray;
-  padding: 15px;
-
-  p {
-    color: black;
-    font-weight: 500;
-    margin-bottom: 0px;
-  }
-`;
-
-const OrdersContainer = styled.div``;
-
-const Payout = styled.div``;
-const PayoutMethod = styled.div`
-  p {
-    border-bottom: 1px solid black;
-    padding-bottom: 10px;
-  }
-`;
-
-const PriceContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  p {
-    font-size: 18px;
-  }
-`;
-const Price = styled.p`
-  color: red;
-  font-weight: 600;
-`;
+import ProductCart from "./ProductCart";
+import { useForm } from "../../Hooks/useForm";
+import GlobalStateContext from '../../GlobalState/GlobalStateContext'
+import { initialForm } from "../../Constants/inputs";
 
 function CartPage() {
   useProtectedPage();
+  const [form, onChange] = useForm(initialForm)
+  const { states, requests } = useContext(GlobalStateContext)
+  const { neighbourhood, number } = states.editAddress || {}
+  const { shipping, name, logoUrl, category, address, deliveryTime } = states.dataRestaurant || {}
+  const cartProducts = states.cartProducts
 
-  const totalValue = exampleProducts.reduce((total, product) => {
-    return total + (product.price * product.quantity);
-  },0);
+  const sendForm = (e) => {
+    e.preventDefault()
+  }
+
+  const totalValue = cartProducts.reduce((total, product) => {
+    return total + (product.price * product.quantity) + { shipping };
+  }, 0);
+
+  const renderPrice = () => {
+    if (totalValue % 1 === 0) {
+      return (
+        <p>
+          R${cartProducts.price}.00
+        </p>
+      )
+    } else {
+      return (
+        <p>
+          R${cartProducts.price}0
+        </p>
+      )
+    }
+  }
+
+  const sumDeliveryTime = deliveryTime + 15
+
+  const limpar = () => {
+    window.localStorage.removeItem("cart");
+  }
 
   return (
     <>
+    <button onClick={() => {limpar()}}>Limpar local</button>
       <Title>Meu carrinho</Title>
       <AdressContainer>
         Endereço de entrega
-        <p>Rua Alessandra Viera, 42</p>
+        <p>{neighbourhood}, {number}</p>
       </AdressContainer>
       <MainContainer>
-        <OrdersContainer>
-          <ProductCard data={exampleProducts[0]} />
-          <ProductCard data={exampleProducts[1]} />
-          <ProductCard data={exampleProducts[2]} />
-          <ProductCard data={exampleProducts[3]} />
-          <ProductCard data={exampleProducts[4]} />
-        </OrdersContainer>
+        {name ?
+          <>
+            <p>{name}</p>
+            <p>{address}</p>
+            <p>{deliveryTime} - {sumDeliveryTime} min</p>
+            <OrdersContainer>
+              <ProductCart paymentMethod={form.paymentMethod} />
+            </OrdersContainer>
+          </>
+          : <p>Carrinho vazio</p>
+        }
         <Payout>
+          <p>Frete R${shipping},00</p>
           <PriceContainer>
             <p>SUBTOTAL</p>
-            <Price>R${totalValue}</Price>
+            <Price>R${renderPrice()}</Price>
           </PriceContainer>
           <PayoutMethod>
             <p>Forma de pagamento</p>
           </PayoutMethod>
-          <RadioGroup aria-label="gender" name="gender1">
-            <FormControlLabel
-              value="cash"
-              control={<Radio color="primary" />}
-              label="Dinheiro"
-            />
-            <FormControlLabel
-              value="credit"
-              control={<Radio color="primary" />}
-              label="Cartão de crédito"
-            />
-          </RadioGroup>
+          <form onSubmit={sendForm}>
+            <RadioGroup aria-label="gender" name="gender1">
+              <FormControlLabel
+                value={form.paymentMethod}
+                onChange={onChange}
+                control={<Radio color="primary" />}
+                label="Dinheiro"
+              />
+              <FormControlLabel
+                value={form.paymentMethod}
+                onChange={onChange}
+                control={<Radio color="primary" />}
+                label="Cartão de crédito"
+              />
+            </RadioGroup>
+          </form>
         </Payout>
         <Button color="primary" variant="contained">
           Confirmar

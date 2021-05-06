@@ -1,71 +1,41 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useProtectedPage } from '../../Hooks/useProtectedPage'
 import { axiosConfig, baseUrl } from '../../Constants/urls';
 import { useHistory, useParams } from 'react-router-dom'
 import ProductsCard from './ProductsCard'
 import axios from 'axios'
 import { ButtonBack, Title, HeaderContainer, ContainerInformation, useStyles } from './Styled'
-import { goToLastPage} from '../../Router/coordinator'
+import { goToLastPage } from '../../Router/coordinator'
 import back from '../../Imgs/back.png'
-import {Card, CardActionArea, CardContent, CardMedia, Typography } from '@material-ui/core';
-
+import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@material-ui/core';
+import GlobalStateContext from '../../GlobalState/GlobalStateContext';
 
 function CardRestaurant() {
     useProtectedPage()
     const classes = useStyles();
     const history = useHistory()
+    const {states, requests} = useContext(GlobalStateContext)
     const pathParams = useParams()
     const restaurantId = pathParams.restaurantId
-    const [data, setData] = useState({})
-    const { shipping, name, logoUrl, category, address, deliveryTime } = data || {}
-    const [product, setProduct] = useState([])
-    const [productsCategories, setProductsCategories] = useState([])
+    const { shipping, name, logoUrl, category, address, deliveryTime } = states.dataRestaurant || {}
 
     useEffect(() => {
-        getRestaurant()
-    }, [productsCategories])
-
-    const getRestaurant = async () => {
-        try {
-            const res = await axios.get(`${baseUrl}/restaurants/${restaurantId}`, axiosConfig)
-            setData(res.data.restaurant)
-            setProduct(res.data.restaurant.products)
-            getCategories()
-        } catch (err) {
-            alert(`❌ ${err.response.data.message}`)
-        }
-    }
-
-    //Removendo categorias duplicadas - https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates
-    const onlyUnique = (value, index, self) => {
-        return self.indexOf(value) === index;
-    }
-
-    const getCategories = () => {
-
-        let categories = product && product
-
-            .map((product) => {
-                return product.category
-            })
-            .filter(onlyUnique)
-
-        setProductsCategories(categories)
-    }
+        requests.getRestaurantDetail(restaurantId)
+    }, [states.productsCategories])
 
     const timeDelivery = deliveryTime + 15
 
-const history = useHistory()
-
-const voltar = () => {
-    history.goBack()
-}
+    const goback = () => {
+        history.goBack()
+    }
 
     return (
         <div>
             <HeaderContainer>
-                <ButtonBack onClick={() => goToLastPage(history)}> <img src={back} alt='back' /> </ButtonBack>
+
+                <ButtonBack onClick={() => goback()}> <img src={back} alt='back' /> </ButtonBack>
                 <Title restaurant>Restaurante</Title>
+
                 <p></p>
             </HeaderContainer>
             {name ?
@@ -81,7 +51,7 @@ const voltar = () => {
                                 <Typography className={classes.title} color='primary' variant="p" component="p">{name} </Typography>
 
                                 <Typography className={classes.information} component="p">
-                                {category}
+                                    {category}
                                 </Typography>
                                 <ContainerInformation frete>
                                     <Typography className={classes.information} component="p">
@@ -97,17 +67,18 @@ const voltar = () => {
                         </CardActionArea>
                     </Card>
 
-                    {productsCategories.map((category) => {
+                    {states.productsCategories.map((category) => {
                         return (
                             <>
                                 <Typography className={classes.categoryTitle} component="p"> {category} </Typography>
-                                {product.map((product) => {
+                                {states.product.map((product) => {
                                     if (product.category === category) {
                                         return (
                                             <ProductsCard
                                                 key={product.id}
                                                 product={product}
-                                                restaurant={data}
+                                                restaurant={states.dataRestaurant}
+                                                restaurantId={restaurantId}
                                             />
                                         )
                                     }

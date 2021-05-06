@@ -2,17 +2,15 @@ import React, { useState, useContext, useEffect } from 'react'
 import { useHistory } from "react-router";
 import { useForm } from "../../Hooks/useForm";
 import { initialForm } from "../../Constants/inputs";
-import { Icon, ButtonBack, InputSearch, ContainerSearch, HeaderContainer, Title, ContainerFilter } from './Styled'
-import GlobalStateContext from "../../GlobalState/GlobalStateContext";
+import { Icon, ButtonBack, InputSearch, ButtonOptions, HeaderContainer, Title, ContainerFilter } from './Styled'
 import back from '../../Imgs/back.png'
-import { Restaurant } from '@material-ui/icons';
 import { axiosConfig, baseUrl } from '../../Constants/urls';
 import axios from 'axios'
+import CardAllRestaurants from '../CardAllRestaurants/CardAllRestaurants'
 
-function Search() {
+function Search(props) {
     const [form, onChange, resetForm] = useForm(initialForm)
-    let { states } = useContext(GlobalStateContext)
-    const restaurants = states.restaurants
+    const restaurants = props.restaurants
     const [searchOpen, setSearchOpen] = useState(false)
     const [products, setProducts] = useState([])
     const [productsName, setProductsName] = useState([])
@@ -25,7 +23,7 @@ function Search() {
 
     const inicialStateFilter = () => {
         if (form.inputSearch === '') {
-            setFilter(states && states.restaurants)
+            setFilter(props && props.restaurants)
         }
     }
 
@@ -42,7 +40,14 @@ function Search() {
 
     const categoryOptions = restaurants && restaurants.map((restaurants) => {
         return (
-            <button key={restaurants.id} onClick={() => onClickCategory(restaurants.category)}>{restaurants.category}</button>
+            <>
+                {!searchOpen ? <ButtonOptions key={restaurants.id} onClick={() => onClickCategory(restaurants.category)}>{restaurants.category}</ButtonOptions> :
+                    (form.category === restaurants.category ?
+                        <ButtonOptions red key={restaurants.id} onClick={() => onClickCategory(restaurants.category)}>{restaurants.category}</ButtonOptions>
+                        : <ButtonOptions key={restaurants.id} onClick={() => onClickCategory(restaurants.category)}>{restaurants.category}</ButtonOptions>
+                    )
+                }
+            </>
         )
     })
 
@@ -118,18 +123,24 @@ function Search() {
     //         )
     //     }
     // }
-    
-    console.log(filter)
+
+    // console.log(filter)
 
     const Header = () => {
 
         if (searchOpen) {
             return (
-                <HeaderContainer back>
-                    <ButtonBack onClick={() => onClickBack()}> <img src={back} alt='back' /> </ButtonBack>
-                    <Title>Busca</Title>
-                    <p></p>
-                </HeaderContainer>
+                <>
+                    <HeaderContainer back>
+                        <ButtonBack onClick={() => onClickBack()}> <img src={back} alt='back' /> </ButtonBack>
+                        <Title>Busca</Title>
+                        <p></p>
+                    </HeaderContainer>
+
+                    <ContainerFilter>
+                        {categoryOptions}
+                    </ContainerFilter>
+                </>
             )
         } else {
             return (
@@ -164,6 +175,9 @@ function Search() {
     return (
         <div>
             {Header()}
+            <CardAllRestaurants
+                restaurants={filter}
+            />
         </div >
     )
 }
