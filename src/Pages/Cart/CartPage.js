@@ -1,5 +1,5 @@
 import { Button } from "@material-ui/core";
-import React from "react";
+import React, { useState } from "react";
 import { useProtectedPage } from "../../Hooks/useProtectedPage";
 import styled from "styled-components";
 import { FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
@@ -13,7 +13,7 @@ const exampleProducts = [
     photoUrl:
       "https://static-images.ifood.com.br/image/upload/f_auto,t_high/pratos/65c38aa8-b094-413d-9a80-ddc256bfcc78/201907031404_66194495.jpg",
     name: "Bibsfiha carne",
-    quantity: 10,
+    quantity: 50,
   },
   {
     id: "KJqMl2DxeShkSBevKVre",
@@ -22,14 +22,14 @@ const exampleProducts = [
     name: "Refrigerante",
     description: "Coca cola, Sprite ou Guaraná",
     price: 4,
-    quantity: 10,
+    quantity: 7,
   },
   {
     id: "SmT6MYMm8QC8riHYApzt",
     name: "Batata Frita",
     description: "Batata frita crocante e sequinha.",
     price: 9.5,
-    quantity: 10,
+    quantity: 8,
     photoUrl:
       "https://static-images.ifood.com.br/image/upload/f_auto,t_high/pratos/65c38aa8-b094-413d-9a80-ddc256bfcc78/201907031409_66194560.jpg",
   },
@@ -38,7 +38,7 @@ const exampleProducts = [
     name: "Beirute",
     description: "",
     price: 22.9,
-    quantity: 10,
+    quantity: 2,
     photoUrl:
       "https://static-images.ifood.com.br/image/upload/f_auto,t_high/pratos/65c38aa8-b094-413d-9a80-ddc256bfcc78/201907031424_66194598.jpg",
   },
@@ -47,7 +47,7 @@ const exampleProducts = [
     name: "Pizza",
     description: "",
     price: 31.9,
-    quantity: 10,
+    quantity: 23,
     photoUrl:
       "https://static-images.ifood.com.br/image/upload/f_auto,t_high/pratos/65c38aa8-b094-413d-9a80-ddc256bfcc78/201907031245_66194219.jpg",
   },
@@ -55,7 +55,7 @@ const exampleProducts = [
 
 const MainContainer = styled.div`
   font-family: "Roboto";
-  padding: 10px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   padding-bottom: 4rem;
@@ -81,7 +81,9 @@ const AdressContainer = styled.div`
   }
 `;
 
-const OrdersContainer = styled.div``;
+const OrdersContainer = styled.div`
+  text-align: center;
+`;
 
 const Payout = styled.div``;
 const PayoutMethod = styled.div`
@@ -103,12 +105,44 @@ const Price = styled.p`
   font-weight: 600;
 `;
 
+const Restaurant = styled.div`
+  text-align: left;
+  h4{
+    color: red;
+    margin: 0px;
+  }
+  p{
+    color: gray;
+  }
+`
+
 function CartPage() {
   useProtectedPage();
+  
+  const [paymentMethod, setPaymentMethod] = useState('money');
 
   const totalValue = exampleProducts.reduce((total, product) => {
-    return total + (product.price * product.quantity);
-  },0);
+    return total + product.price * product.quantity;
+  }, 0);
+
+  const placeOrder = () => {
+
+  }
+
+  const productsCards = () => {
+    return (
+      <>
+      <Restaurant>
+        <h4>Bullger Vila Madalena</h4>
+        <p>R. Fradique Coutinho, 1136 - Vila Madalena</p>
+        <p>30 - 40 min</p>
+      </Restaurant>
+      {exampleProducts.map((product) => {
+        return <ProductCard data={product} />;
+      })}
+      </>
+    );
+  }
 
   return (
     <>
@@ -119,34 +153,32 @@ function CartPage() {
       </AdressContainer>
       <MainContainer>
         <OrdersContainer>
-          <ProductCard data={exampleProducts[0]} />
-          <ProductCard data={exampleProducts[1]} />
-          <ProductCard data={exampleProducts[2]} />
-          <ProductCard data={exampleProducts[3]} />
-          <ProductCard data={exampleProducts[4]} />
+          {exampleProducts.length
+            ? productsCards()
+            : "carrinho vazio"}
         </OrdersContainer>
         <Payout>
           <PriceContainer>
             <p>SUBTOTAL</p>
-            <Price>R${totalValue}</Price>
+            <Price>R${totalValue.toFixed(2)}</Price>
           </PriceContainer>
           <PayoutMethod>
             <p>Forma de pagamento</p>
           </PayoutMethod>
-          <RadioGroup aria-label="gender" name="gender1">
+          <RadioGroup value={paymentMethod} onChange={(e)=>{setPaymentMethod(e.target.value)}}>
             <FormControlLabel
-              value="cash"
+              value="money"
               control={<Radio color="primary" />}
               label="Dinheiro"
             />
             <FormControlLabel
-              value="credit"
+              value="creditcard"
               control={<Radio color="primary" />}
               label="Cartão de crédito"
             />
           </RadioGroup>
         </Payout>
-        <Button color="primary" variant="contained">
+        <Button onClick={placeOrder} color="primary" variant="contained">
           Confirmar
         </Button>
       </MainContainer>
