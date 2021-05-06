@@ -10,6 +10,7 @@ const MainContainer = styled.div`
   font-family: 'Roboto';
   margin: 10px 0px;
   position: relative;
+  text-align:left;
 `;
 
 const Image = styled.div`
@@ -70,7 +71,7 @@ const ProductCard = (props) => {
       <Data>
         <Title>{props.data.name}</Title>
         <Description>{props.data.description ? props.data.description : 'sem descrição'}</Description>
-        <TotalValue>R${props.data.price * props.data.quantity}</TotalValue>
+        <TotalValue>R${(props.data.price * props.data.quantity).toFixed(2)}</TotalValue>
       </Data>
     </MainContainer>
   );
