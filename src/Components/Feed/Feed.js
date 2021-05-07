@@ -27,7 +27,7 @@ function Feed(props) {
     useEffect(() => {
         inicialStateFilter()
         // getProducts()
-    }, [restaurants])
+    }, [restaurants, states.order])
 
     const inicialStateFilter = () => {
         if (form.inputSearch === '') {
