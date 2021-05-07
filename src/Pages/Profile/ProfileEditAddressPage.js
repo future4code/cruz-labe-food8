@@ -69,7 +69,6 @@ function ProfileEditAddressPage() {
           variant={"outlined"}
           fullWidth
           margin={"normal"}
-          required
           type={"text"}
           placeholder={"Complemento"}
         />

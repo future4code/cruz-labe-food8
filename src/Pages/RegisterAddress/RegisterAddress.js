@@ -1,53 +1,33 @@
-import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import useProtectedPage from "../../Hooks/useProtectedPage";
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import MenuBack from "../../Components/MenuBack";
 import { Button, TextField } from "@material-ui/core";
 import { useForm } from "../../Hooks/useForm";
 import axios from "axios";
 import { baseUrl } from "../../Constants/urls";
 import { goToFeed } from "../../Router/coordinator";
-
-const MainContainer = styled.div`
-  font-family: Roboto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0rem 1rem;
-`;
-
-const Title = styled.h3`
-  font-size: 1rem;
-  font-weight: 500;
-  margin-top: 5.75rem;
-`;
-
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  text-align: center;
-  gap: 20px;
-`;
+import {MainContainer, Title, StyledForm} from './Styled'
+import GlobalStateContext from '../../GlobalState/GlobalStateContext'
 
 const RegisterAddress = () => {
   useProtectedPage();
+  const { requests } = useContext(GlobalStateContext);
 
   const history = useHistory();
 
-  useEffect(() => {
-    axios
-      .get(`${baseUrl}/profile/address`, {
-        headers: { auth: localStorage.getItem("token") },
-      })
-      .then((res) => {
-        res.data.address && goToFeed(history);
-      })
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(`${baseUrl}/profile/address`, {
+  //       headers: { auth: localStorage.getItem("token") },
+  //     })
+  //     .then((res) => {
+  //       res.data.address && goToFeed(history);
+  //     })
+  // }, []);
 
 
-  const [form, formHandle] = useForm({
+  const [form, onChange, clear] = useForm({
     street: "",
     city: "",
     state: "",
@@ -58,28 +38,28 @@ const RegisterAddress = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const body = {
-      street: form.street,
-      city: form.city,
-      state: form.state,
-      number: form.number,
-      complement: form.complement,
-      neighbourhood: form.neighbourhood,
-    };
-    axios
-      .put(`${baseUrl}/address`, body, {
-        headers: { auth: localStorage.getItem("token") },
-      })
-      .then((res) => {
-        alert("endereço cadastrado");
-        goToFeed(history);
-      })
-      .catch((err) => {
-        alert(err.response.data.message);
-      });
+    // const body = {
+    //   street: form.street,
+    //   city: form.city,
+    //   state: form.state,
+    //   number: form.number,
+    //   complement: form.complement,
+    //   neighbourhood: form.neighbourhood,
+    // };
+    // axios
+    //   .put(`${baseUrl}/address`, body, {
+    //     headers: { auth: localStorage.getItem("token") },
+    //   })
+    //   .then((res) => {
+    //     alert("endereço cadastrado");
+    //     goToFeed(history);
+    //   })
+    //   .catch((err) => {
+    //     alert(err.response.data.message);
+    //   });
+    requests.putEditAddress(form, clear, history);
+      goToFeed(history)
   };
-
-  useProtectedPage();
 
   return (
     <MainContainer>
@@ -92,7 +72,7 @@ const RegisterAddress = () => {
           label="Logradouro"
           placeholder="Rua / Av."
           value={form.street}
-          onChange={formHandle}
+          onChange={onChange}
           required
           type="text"
         />
@@ -103,7 +83,7 @@ const RegisterAddress = () => {
           label="Número"
           placeholder="123"
           value={form.number}
-          onChange={formHandle}
+          onChange={onChange}
           required
           type="number"
         />
@@ -114,8 +94,7 @@ const RegisterAddress = () => {
           label="Complemento"
           placeholder="Apto. / Bloco"
           value={form.complement}
-          onChange={formHandle}
-          required
+          onChange={onChange}
           type="text"
         />
 
@@ -125,7 +104,7 @@ const RegisterAddress = () => {
           label="Bairro"
           placeholder="Recanto"
           value={form.neighbourhood}
-          onChange={formHandle}
+          onChange={onChange}
           required
           type="text"
         />
@@ -136,7 +115,7 @@ const RegisterAddress = () => {
           label="Cidade"
           placeholder="Ipatinga"
           value={form.city}
-          onChange={formHandle}
+          onChange={onChange}
           required
           type="text"
         />
@@ -147,7 +126,7 @@ const RegisterAddress = () => {
           label="Estado"
           placeholder="Minas Gerais"
           value={form.state}
-          onChange={formHandle}
+          onChange={onChange}
           required
           type="text"
         />

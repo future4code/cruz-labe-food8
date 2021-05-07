@@ -5,19 +5,21 @@ import {
   TextField,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
-import { StyledForm, MainContainer, Logo, Title} from './Styled'
+import { StyledForm, MainContainer, Logo, Title } from './Styled'
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
 import { baseUrl } from "../../Constants/urls";
 import { useForm } from "../../Hooks/useForm";
-import { goToRegister, goToRegisterAddress } from "../../Router/coordinator";
+import { goToFeed, goToRegisterAddress } from "../../Router/coordinator";
 import logo_img from "../../Imgs/logo_red.png";
+import GlobalStateContext from "../../GlobalState/GlobalStateContext";
 
 const LoginPage = () => {
   const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
   const [form, formHandle] = useForm({ email: "", password: "" });
+  const { requests } = useContext(GlobalStateContext)
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -26,12 +28,17 @@ const LoginPage = () => {
       .then((res) => {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('user', JSON.stringify(res.data.user));
-        goToRegisterAddress(history);
+        goToFeed(history)
       })
       .catch((err) => {
         alert(err.response.data.message);
       });
   };
+
+  const register = () => {
+    requests.logout()
+    goToRegisterAddress(history);
+  }
 
   return (
     <MainContainer>
@@ -71,10 +78,12 @@ const LoginPage = () => {
         <Button type="submit" color="primary" variant="contained">
           Entrar
         </Button>
-        <Button onClick={() => goToRegister(history)}>
-          Não possui cadastro? clique aqui.
-        </Button>
       </StyledForm>
+
+      <Button onClick={() => { register() }}>
+        Não possui cadastro? clique aqui.
+        </Button>
+
     </MainContainer>
   );
 };
