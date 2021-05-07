@@ -15,33 +15,7 @@ import { baseUrl } from "../../Constants/urls";
 import MenuBack from "../../Components/MenuBack"
 import { goToFeed } from "../../Router/coordinator";
 import { useHistory } from "react-router-dom";
-
-const Logo = styled.img`
-  margin-top: 5.5rem;
-  width: 6.5rem;
-`;
-
-const MainContainer = styled.div`
-  font-family: Roboto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0rem 1rem;
-`;
-
-const Title = styled.h3`
-  font-size: 1rem;
-  font-weight: 500;
-  margin-top: 30px;
-`;
-
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  text-align: center;
-  gap: 20px;
-`;
+import * as S from "./Styled"
 
 const SignUpPage = () => {
   const history = useHistory();
@@ -78,11 +52,11 @@ const SignUpPage = () => {
   };
 
   return (
-    <MainContainer>
+    <S.MainContainer>
       <MenuBack />
-      <Logo src={logo_img} />
-      <Title>Cadastrar</Title>
-      <StyledForm onSubmit={onSubmit}>
+      <S.Logo src={logo_img} />
+      <S.Title>Cadastrar</S.Title>
+      <S.StyledForm onSubmit={onSubmit}>
         <TextField
           variant="outlined"
           name="name"
@@ -169,8 +143,8 @@ const SignUpPage = () => {
         <Button type="submit" color="primary" variant="contained">
           Criar
         </Button>
-      </StyledForm>
-    </MainContainer>
+      </S.StyledForm>
+    </S.MainContainer>
   );
 };
 

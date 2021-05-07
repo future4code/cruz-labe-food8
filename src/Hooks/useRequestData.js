@@ -3,6 +3,7 @@ import axios from 'axios'
 
 const useRequestData = (initialData, url, header) => {
     const [data, setData] = useState(initialData)
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         axios.get(url, header)
@@ -12,7 +13,8 @@ const useRequestData = (initialData, url, header) => {
             .catch((error) => {
                 alert(`❌ ${error.response.data.message}`)
             })
+            setIsLoading(false)
     }, [url])
-    return [data]
+    return [data, isLoading]
 }
 export default useRequestData

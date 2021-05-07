@@ -1,124 +1,120 @@
-import React,  { useContext, useEffect, useState} from "react";
-import axios from 'axios'
-import { useProtectedPage } from '../../Hooks/useProtectedPage'
+import React, { useContext, useEffect, useState } from "react";
+import { useProtectedPage } from "../../Hooks/useProtectedPage";
 import GlobalStateContext from "../../GlobalState/GlobalStateContext";
-import {useForm} from '../../Hooks/useForm'
+import { useForm } from "../../Hooks/useForm";
 import { goToProfile, goToLastPage } from "../../Router/coordinator";
 import { useHistory } from "react-router";
+import MenuBack from "../../Components/MenuBack"
+import * as S from "./Styled"
+import {
+    Button,
+    TextField,
+  } from "@material-ui/core";
 
 function ProfileEditAddressPage() {
-    useProtectedPage()
-    const history = useHistory()
-    const { states, setters, requests } = useContext(GlobalStateContext);
-   
-    const [form, onChange, clear] = useForm({
-        street: '',
-        number: '',
-        neighbourhood: '',
-        city: '',
-        state: '',
-        complement: ''
-    })
+  useProtectedPage();
+  const history = useHistory();
+  const { states, setters, requests } = useContext(GlobalStateContext);
 
-    const onSubmitForm = (event) => {
-        event.preventDefault()
-        requests.putEditAddress(form, clear, history)
-    }
-    
+  const [form, onChange, clear] = useForm({
+    street: "",
+    number: "",
+    neighbourhood: "",
+    city: "",
+    state: "",
+    complement: ""
+  });
 
-    return (
-        <div>
-            <div>
-                <button onClick={() => goToLastPage(history)}> voltar </button>
-                <h4> Editar </h4>
-            </div>
-            <form onSubmit={onSubmitForm}>
-                    <input
-                        name={'street'}
-                        value={form.street}
-                        onChange={onChange}
-                        label={"Logradouro"}
-                        variant={"outlined"}
-                        fullWidth
-                        margin={"normal"}
-                        required
-                        type={"text"}
-                        placeholder={"Rua"}
+  const onSubmitForm = (event) => {
+    event.preventDefault();
+    requests.putEditAddress(form, clear, history);
+  };
 
-                    />
-                    <input
-                        name={"number"}
-                        value={form.number}
-                        onChange={onChange}
-                        label={"Número"}
-                        variant={"outlined"}
-                        fullWidth
-                        margin={"normal"}
-                        required
-                        type={"number"}
-                        placeholder={"Numero"}
-                    />
-                    <input
-                        name={"complement"}
-                        value={form.apartment}
-                        onChange={onChange}
-                        label={"Complemento"}
-                        variant={"outlined"}
-                        fullWidth
-                        margin={"normal"}
-                        required
-                        type={"text"}
-                        placeholder={"Complemento"}
-                    />
-                    <input
-                        name={"neighbourhood"}
-                        value={form.neighbourhood}
-                        onChange={onChange}
-                        label={"Bairro"}
-                        variant={"outlined"}
-                        fullWidth
-                        margin={"normal"}
-                        required
-                        type={"text"}
-                        placeholder={"Bairro"}
-                    />
-                    <input
-                        name={"city"}
-                        value={form.city}
-                        onChange={onChange}
-                        label={"Cidade"}
-                        variant={"outlined"}
-                        fullWidth
-                        margin={"normal"}
-                        required
-                        type={"text"}
-                        placeholder={"Cidade"}
-                    />
-                    <input
-                        name={"state"}
-                        value={form.state}
-                        onChange={onChange}
-                        label={"Estado"}
-                        variant={"outlined"}
-                        fullWidth
-                        margin={"normal"}
-                        required
-                        type={"text"}
-                        placeholder={"Estado"}
-                    />
-                    <button
-                    type={"submit"}
-                    fullWidth
-                    variant={"contained"}
-                    color={"primary"}
-                    >
-                    Salvar
-                    </button>
-
-            </form>
-            
-        </div>
-    );
+  return (
+    <S.MainContainer>
+      <MenuBack/>
+      <S.Title> Editar </S.Title>
+      
+      <S.StyledForm onSubmit={onSubmitForm}>
+        
+        <TextField
+          name={"street"}
+          value={form.street}
+          onChange={onChange}
+          label={"Logradouro"}
+          variant={"outlined"}
+          fullWidth
+          margin={"normal"}
+          required
+          type={"text"}
+          placeholder={"Rua"}
+        />
+        <TextField
+          name={"number"}
+          value={form.number}
+          onChange={onChange}
+          label={"Número"}
+          variant={"outlined"}
+          fullWidth
+          margin={"normal"}
+          required
+          type={"number"}
+          placeholder={"Numero"}
+        />
+        <TextField
+          name={"complement"}
+          value={form.apartment}
+          onChange={onChange}
+          label={"Complemento"}
+          variant={"outlined"}
+          fullWidth
+          margin={"normal"}
+          required
+          type={"text"}
+          placeholder={"Complemento"}
+        />
+        <TextField
+          name={"neighbourhood"}
+          value={form.neighbourhood}
+          onChange={onChange}
+          label={"Bairro"}
+          variant={"outlined"}
+          fullWidth
+          margin={"normal"}
+          required
+          type={"text"}
+          placeholder={"Bairro"}
+        />
+        <TextField
+          name={"city"}
+          value={form.city}
+          onChange={onChange}
+          label={"Cidade"}
+          variant={"outlined"}
+          fullWidth
+          margin={"normal"}
+          required
+          type={"text"}
+          placeholder={"Cidade"}
+        />
+        <TextField
+          name={"state"}
+          value={form.state}
+          onChange={onChange}
+          label={"Estado"}
+          variant={"outlined"}
+          fullWidth
+          margin={"normal"}
+          required
+          type={"text"}
+          placeholder={"Estado"}
+        />
+        <Button type="submit" color="primary" variant="contained">
+         Salvar
+        </Button>
+      </S.StyledForm>
+    </S.MainContainer>
+  );
 }
 
 export default ProfileEditAddressPage;

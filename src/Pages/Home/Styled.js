@@ -12,4 +12,5 @@ export const DivMaster = styled.div`
 export const ImageInitial = styled.img`
   width:126px;
   height:65px;
+  
 `
