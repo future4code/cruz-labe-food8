@@ -5,6 +5,7 @@ import {DivMaster, ImageInitial} from './Styled'
 
 const HomePage = () => {
   const history = useHistory()
+
   const go = () => {
     goToLogin(history)
   }

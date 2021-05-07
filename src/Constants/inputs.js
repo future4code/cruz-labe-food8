@@ -4,5 +4,7 @@ export const initialForm = {
     name: '',
     email:'',
     quantity: '',
+    id:'',
+    paymentMethod:'',
 }
 

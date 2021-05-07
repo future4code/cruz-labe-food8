@@ -9,7 +9,7 @@ import ProfilePage from "../Pages/Profile/ProfilePage";
 import ProfileEditAddressPage from "../Pages/Profile/ProfileEditAddressPage";
 import ProfileEditNamePage from "../Pages/Profile/ProfileEditNamePage";
 import CartPage from "../Pages/Cart/CartPage";
-import MenuNav from "../Components/MenuNav";
+import MenuNav from "../Components/MenuNav/MenuNav";
 import ErrorPage from "../Pages/Error/ErrorPage";
 
 function Router() {

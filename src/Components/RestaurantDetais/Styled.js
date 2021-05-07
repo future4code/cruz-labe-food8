@@ -40,8 +40,8 @@ export const ContainerInformation = styled.div`
 export const ButtonAdd = styled.button`
     width: 90px;
     height: 31px;
-    margin-left: 8.7rem;
-    margin-top: -2.3rem;
+    margin-left: 9.4rem;
+    margin-top: -2.2rem;
     background-color: transparent;
     border: solid 1px ${props => props.remove ? '#e02020' : 'black'};
     border-top-left-radius: 8px;
@@ -55,7 +55,7 @@ export const Quantity = styled.p`
     border-bottom-left-radius: 8px;
     color: #e02020;
     padding: 0.3rem 0.6rem;
-    margin-left:12.48rem;
+    margin-left:13.2rem;
     margin-top: -1rem;
     position: absolute;
 `
@@ -147,6 +147,8 @@ export const useStyles = makeStyles({
     letterSpacing: '-0.29px',
     marginTop: '0.3rem',
     color: '#b8b8b8',
+    width: '14rem',
+    height:'2rem'
   },
   titleProduct: {
     fontSize: '1rem',
@@ -164,13 +166,14 @@ export const useStyles = makeStyles({
   },
   mediaProduct: {
     width: '6rem',
-    height: '7rem',
+    height: '8rem',
   },
   containerProducts: {
     display: 'flex',
     margin: '1rem',
     boxShadow: 'none',
-    height: '7rem',
+    maxHeight: '8rem',
+    minHeight: '8rem',
     border: 'solid 1px gray',
     borderRadius: '9px',
   },
