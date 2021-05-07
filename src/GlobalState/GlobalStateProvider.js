@@ -6,11 +6,9 @@ import { baseUrl, axiosConfig } from '../Constants/urls'
 import { goToLogin, goToProfile } from "../Router/coordinator";
 import { useForm } from "../Hooks/useForm";
 import { initialForm } from "../Constants/inputs";
-import useRequestData from '../Hooks/useRequestData'
 
 const GlobalStateProvider = (props) => {
   const history = useHistory();
-  // const [data] = useRequestData({}, `${baseUrl}/restaurants/`, axiosConfig)
   const [restaurants, setRestaurants] = useState()
   const [editProfile, setEditProfile] = useState({})
   const [editAddress, setEditAddress] = useState({})
@@ -31,7 +29,7 @@ const GlobalStateProvider = (props) => {
 
   const getRestaurants = async () => {
     try {
-      const res = await axios.get(`${baseUrl}/restaurants/`, axiosConfig)
+      const res = await axios.get(`${baseUrl}/restaurants`, axiosConfig)
       setRestaurants(res.data.restaurants)
     } catch (err) {
       alert(`❌ ${err.response.data.message}`)
@@ -55,18 +53,18 @@ const GlobalStateProvider = (props) => {
   }
 
   const getCategories = () => {
+      let categories = product && product
 
-    let categories = product && product
+        .map((product) => {
+          return product.category
+        })
+        .filter(onlyUnique)
 
-      .map((product) => {
-        return product.category
-      })
-      .filter(onlyUnique)
-
-    //       Object.getOwnPropertyNames()
-    // includes
-    setProductsCategories(categories)
+      //       Object.getOwnPropertyNames()
+      // includes
+      return setProductsCategories(categories)
   }
+  
 
   const postOrder = async () => {
     const body = {
