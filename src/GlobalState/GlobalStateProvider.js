@@ -64,8 +64,6 @@ const GlobalStateProvider = (props) => {
         })
         .filter(onlyUnique)
 
-      //       Object.getOwnPropertyNames()
-      // includes
       return setProductsCategories(categories)
   }
   

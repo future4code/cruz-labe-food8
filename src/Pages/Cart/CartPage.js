@@ -16,25 +16,21 @@ import {
 import { FormControlLabel, Radio, RadioGroup } from "@material-ui/core";
 import ProductCart from "./ProductCart";
 import { useForm } from "../../Hooks/useForm";
-import axios from 'axios'
-import {baseUrl, axiosConfig} from '../../Constants/urls'
 import GlobalStateContext from '../../GlobalState/GlobalStateContext'
 import { initialForm } from "../../Constants/inputs";
-
 
 function CartPage() {
   useProtectedPage();
   const [form] = useForm(initialForm)
   const { states, requests } = useContext(GlobalStateContext)
-  const { neighbourhood, number } = states.editAddress || {}
-  const { shipping, name, logoUrl, category, address, deliveryTime } = states.dataRestaurant || {}
+  const { neighbourhood, number } = states.editAddress[0].address || {}
+  const { shipping, name, address, deliveryTime } = states.dataRestaurant || {}
   const cartProducts = states.cartProducts
   const [paymentMethod, setPaymentMethod] = useState('money');
 
   const sendOrder = () => {
     requests.postOrder()
   }
-
 
   const totalValue = cartProducts.reduce((total, product) => {
     return total + (product.price * product.quantity) + shipping

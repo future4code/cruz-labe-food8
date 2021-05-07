@@ -13,7 +13,7 @@ import clock from '../../Imgs/clock.png'
 
 function Feed(props) {
     const [form, onChange, resetForm] = useForm(initialForm)
-    let { states } = useContext(GlobalStateContext)
+    let { states, requests } = useContext(GlobalStateContext)
     const restaurants = props.restaurants
     const [searchOpen, setSearchOpen] = useState(false)
     const [products, setProducts] = useState([])
@@ -23,10 +23,9 @@ function Feed(props) {
     let date = new Date(expiresAt)
     const actual = new Date()
 
-
     useEffect(() => {
         inicialStateFilter()
-        // getProducts()
+        requests.getOrder()
     }, [restaurants, states.order])
 
     const inicialStateFilter = () => {
@@ -91,6 +90,7 @@ function Feed(props) {
             setFilter(filtered)
         )
     }
+ 
 
     // const getProducts = async () => {
     //     try {
