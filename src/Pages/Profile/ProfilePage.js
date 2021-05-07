@@ -1,89 +1,85 @@
 import React,  { useContext, useEffect, useState } from "react";
-import axios from 'axios'
 import { useProtectedPage } from '../../Hooks/useProtectedPage'
 import { baseUrl, axiosConfig} from '../../Constants/urls'
 import { goToProfileAddressEdit, goToProfileNameEdit } from "../../Router/coordinator";
 import { useHistory } from "react-router";
 import GlobalStateContext from "../../GlobalState/GlobalStateContext";
+import useRequestData from '../../Hooks/useRequestData'
+import EditIcon from '@material-ui/icons/Edit';
+import * as S from "./Styled"
+import { IconButton} from "@material-ui/core";
+
+import Loading from '../../Components/Loading/Loading'
+  
 
 function ProfilePage() {
     useProtectedPage()
     const history = useHistory();
     const { states, setters, requests } = useContext(GlobalStateContext);
-    const [historyOrders, setHistoryOrders] = useState({})
-    const [profile, setProfile] = useState({})
-
-
-    useEffect(() => {
-        getProfile();
-        getEditAddress();
-        getHistoryOrders();
-    }, [])
-
-   const getProfile = async () => {
-
-        try {
-            const response = await axios.get(`${baseUrl}/profile`, axiosConfig);
-            setProfile(response.data.user)
-            
-        } catch (err) {
-            alert(err.response.data.message)
-        };    
-    }
-    const getEditAddress = async () => {
-
-        try {
-            const response = await axios.get(`${baseUrl}/profile/address`, axiosConfig);
-            setters.setEditAddress(response.data.address)
-            
-        } catch (err) {
-            alert(err.response.data.message)
-        };    
-    }
-
+    const profile = useRequestData({}, `${baseUrl}/profile/`, axiosConfig)
+    const user = profile[0].user
+    const address = states.editAddress[0].address
+    const historyOrders = useRequestData([], `${baseUrl}/orders/history`, axiosConfig)
+    const arrayOrders = historyOrders[0].orders
     
-    const getHistoryOrders = async () => {
-        
-        try {
-            const response = await axios.get(`${baseUrl}/orders/history`, axiosConfig
-            );
-            setHistoryOrders(response.data.orders[0])
-            
-        } catch (err) {
-            alert(err.response.data.message)
-        };    
-    }
+   
+    const listOrders =
+    arrayOrders ? ( 
+    arrayOrders.map((order) => {
+        return (
+            <div>
+                <hr/>
+                <p>{order.restaurantName}</p>
+                <p>Valor Total: R${order.totalPrice}</p>
+                <hr/>
+            </div>
+
+        )
+    })
+    ) : (<Loading/>)
 
 
     return (
-        <div>
-            <h3>Meu Perfil</h3>
-            <div>
+        <S.MainContainer>
+            <S.Header>
+                <S.Title>Meu Perfil</S.Title>
                 <hr/>
-                <div>
-                    <p>{profile.name}</p>
-                    <p>{profile.email}</p>
-                    <p>{profile.cpf}</p>
-                </div>
-                <button onClick={() => goToProfileNameEdit(history)}> Editar </button>
-                <hr/>
-            </div>
+            </S.Header>
+            <S.UserContainer>
+                {user ? (
+                <S.UserData>
+                    <p>{user.name}</p>
+                    <p>{user.email}</p>
+                    <p>{user.cpf}</p>
+                </S.UserData>) 
+                : ( <Loading/> )}
+                <IconButton onClick={() => goToProfileNameEdit(history)}>
+                    <EditIcon />
+                </IconButton>
+            </S.UserContainer>
             
-            <div>
-                <div>
-                    <p>Endereço Cadastrado</p>
-                    <p>{states.editAddress.street}, {states.editAddress.number} - {states.editAddress.neighbourhood}</p> 
-                </div>
-                <button onClick={() => goToProfileAddressEdit(history)}> Editar </button>
-                <hr/>
-            </div>
+            <S.AddressContainer>
+                <S.AddressData>
+                    <h4>Endereço Cadastrado</h4>
+                    {address ? ( 
+                    <div>
+                        <p>{address.street},  {address.number}  - {address.neighbourhood}</p> 
+                    </div>
+                    ) : (<Loading/>)}
+                </S.AddressData>   
+                <IconButton onClick={() => goToProfileAddressEdit(history)}>
+                    <EditIcon />
+                </IconButton> 
                 
-            <div>
-                <p>{historyOrders.restaurantName}</p>
-                <p>Valor Total: R${historyOrders.totalPrice}</p>
-            </div>
+            </S.AddressContainer>
+                
+            <S.HistoryContainer> 
+                <p>Histórico de Pedidos</p>
+                <S.ListOrders> {listOrders} </S.ListOrders>.
+                
+            </S.HistoryContainer>
  
-        </div>
+        </S.MainContainer>
     );
 }
 

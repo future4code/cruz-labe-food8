@@ -4,6 +4,7 @@ import { axiosConfig, baseUrl } from '../../Constants/urls';
 import { useHistory, useParams } from 'react-router-dom'
 import ProductsCard from './ProductsCard'
 import axios from 'axios'
+import Loading from '../../Components/Loading/Loading'
 import { ButtonBack, Title, HeaderContainer, ContainerInformation, useStyles } from './Styled'
 import { goToLastPage } from '../../Router/coordinator'
 import back from '../../Imgs/back.png'
@@ -90,7 +91,7 @@ function CardRestaurant() {
 
                 </>
 
-                : <p>Carregando....</p>
+                : <Loading/>
             }
 
         </div >

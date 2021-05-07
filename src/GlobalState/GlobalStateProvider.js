@@ -6,12 +6,16 @@ import { baseUrl, axiosConfig } from '../Constants/urls'
 import { goToLogin, goToProfile } from "../Router/coordinator";
 import { useForm } from "../Hooks/useForm";
 import { initialForm } from "../Constants/inputs";
+import useRequestData from '../Hooks/useRequestData'
 
 const GlobalStateProvider = (props) => {
   const history = useHistory();
-  const [restaurants, setRestaurants] = useState()
+  // const [restaurants, setRestaurants] = useState()
+  const getRestaurants = useRequestData([], `${baseUrl}/restaurants`, axiosConfig)
+  const restaurants = getRestaurants[0].restaurants
   const [editProfile, setEditProfile] = useState({})
-  const [editAddress, setEditAddress] = useState({})
+  const editAddress = useRequestData({}, `${baseUrl}/profile/address`, axiosConfig) 
+  // const [editAddress, setEditAddress] = useState({})
   const [addressUpdated, setAddressUpdated] = useState("")
   const [form, onChange, resetForm] = useForm(initialForm)
   const [dataRestaurant, setDataRestaurant] = useState({})
@@ -20,21 +24,21 @@ const GlobalStateProvider = (props) => {
   const [cartProducts, setCartProducts] = useState([])
   const [id, setId] = useState()
   const [order, setOrder] = useState({})
-
+ 
   useEffect(() => {
-    getEditAddress()
-    getRestaurants()
+    // getEditAddress()
+    // getRestaurants()
     getOrder()
   }, [cartProducts])
 
-  const getRestaurants = async () => {
-    try {
-      const res = await axios.get(`${baseUrl}/restaurants`, axiosConfig)
-      setRestaurants(res.data.restaurants)
-    } catch (err) {
-      alert(`❌ ${err.response.data.message}`)
-    }
-  }
+  // const getRestaurants = async () => {
+  //   try {
+  //     const res = await axios.get(`${baseUrl}/restaurants`, axiosConfig)
+  //     setRestaurants(res.data.restaurants)
+  //   } catch (err) {
+  //     alert(`❌ ${err.response.data.message}`)
+  //   }
+  // }
 
 
   const getRestaurantDetail = async (restaurantId) => {
@@ -79,16 +83,6 @@ const GlobalStateProvider = (props) => {
     }
   }
 
-  const getEditAddress = async () => {
-    try {
-      const response = await axios.get(`${baseUrl}/profile/address`, axiosConfig);
-      setEditAddress(response.data.address)
-
-    } catch (err) {
-      alert(err.response.data.message)
-    };
-  }
-
   const logout = () => {
     window.localStorage.removeItem("token");
     goToLogin(history);
@@ -101,7 +95,6 @@ const GlobalStateProvider = (props) => {
       setEditProfile(response.data.user)
       clear()
       goToProfile(history)
-      console.log("requisitou")
 
     } catch (err) {
       alert(err.response.data.message)
@@ -164,8 +157,8 @@ const GlobalStateProvider = (props) => {
 
 
   const states = { order, cartProducts, productsCategories, product, dataRestaurant, restaurants, editProfile, editAddress, addressUpdated };
-  const setters = { setCartProducts, setEditProfile, setEditAddress, setAddressUpdated };
-  const requests = { getOrder, removeProduct, addProduct, getCategories, getRestaurantDetail, postOrder, getRestaurants, logout, putEditProfile, putEditAddress };
+  const setters = { setCartProducts, setEditProfile, setAddressUpdated };
+  const requests = { getOrder, removeProduct, addProduct, getCategories, getRestaurantDetail, postOrder, logout, putEditProfile, putEditAddress };
 
   const baseData = { states, setters, requests };
 
