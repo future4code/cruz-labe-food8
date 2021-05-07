@@ -8,9 +8,8 @@ import Loading from '../../Components/Loading/Loading'
 
 function FeedPage() {
     useProtectedPage()
-    let { states, requests } = useContext(GlobalStateContext)
+    let { states } = useContext(GlobalStateContext)
     const restaurants = states && states.restaurants
-    const history = useHistory()
 
     return (
         <div>

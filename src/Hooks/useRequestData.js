@@ -14,7 +14,7 @@ const useRequestData = (initialData, url, header) => {
                 alert(`❌ ${error.response.data.message}`)
             })
             setIsLoading(false)
-    }, [url])
+    }, [url, header, data])
     return [data, isLoading]
 }
 export default useRequestData
