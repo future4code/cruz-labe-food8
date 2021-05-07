@@ -11,6 +11,7 @@ import ProfileEditNamePage from "../Pages/Profile/ProfileEditNamePage";
 import CartPage from "../Pages/Cart/CartPage";
 import MenuNav from "../Components/MenuNav/MenuNav";
 import ErrorPage from "../Pages/Error/ErrorPage";
+import RegisterAddress from "../Pages/RegisterAddress/RegisterAddress";
 
 function Router() {
   return (
@@ -20,12 +21,17 @@ function Router() {
           <HomePage />
         </Route>
 
+        <Route exact path="/address">
+          <RegisterAddress />
+        </Route>
+
         <Route exact path="/login">
           <LoginPage />
         </Route>
 
         <Route exact path="/signup">
           <SignUpPage />
+          <MenuNav home />
         </Route>
 
         <Route exact path="/feed">
@@ -35,6 +41,7 @@ function Router() {
 
         <Route exact path="/feed/:restaurantId">
           <RestaurantPage />
+          <MenuNav profile />
         </Route>
 
         <Route exact path="/profile">
@@ -48,11 +55,12 @@ function Router() {
 
         <Route exact path="/profile/name">
           <ProfileEditNamePage />
+          <MenuNav cart/>
         </Route>
 
         <Route exact path="/cart">
           <CartPage />
-          <MenuNav cart/>
+          <MenuNav cart />
         </Route>
 
         <Route>
