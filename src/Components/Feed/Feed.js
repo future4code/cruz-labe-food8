@@ -19,7 +19,8 @@ function Feed(props) {
     const [products, setProducts] = useState([])
     const [productsName, setProductsName] = useState([])
     const [filter, setFilter] = useState()
-    let date = new Date(states.order.expiresAt)
+    const {expiresAt, restaurantName, totalPrice} = states.order || {}
+    let date = new Date(expiresAt)
     const actual = new Date()
 
 
@@ -134,7 +135,7 @@ function Feed(props) {
     // console.log(filter)
 
     const renderOrder = () => {
-        if (states.order) {
+        if (restaurantName ) {
             return (
                 <ContainerFloat>
                     <ContainerImg>
@@ -142,8 +143,8 @@ function Feed(props) {
                     </ContainerImg>
                     <ContainerText>
                         <Text>Pedido em andamento</Text>
-                        <TextName>{states.order.restaurantName}</TextName>
-                        <TextName subTotal>SUBTOTAL  R${states.order.totalPrice.toFixed(2)}</TextName>
+                        <TextName>{restaurantName}</TextName>
+                        <TextName subTotal>SUBTOTAL  R${totalPrice.toFixed(2)}</TextName>
                     </ContainerText>
                 </ContainerFloat>
             )
@@ -202,7 +203,9 @@ function Feed(props) {
                             <CardAllRestaurants
                                 restaurants={filter}
                             />
-                            {actual === date ? '' : renderOrder()}
+                            {actual === date ? '' : (renderOrder())}
+                            {renderOrder()}
+
                         </div>
     )
 }

@@ -21,10 +21,9 @@ function CardRestaurant() {
 
     useEffect(() => {
         requests.getRestaurantDetail(restaurantId)
+        // requests.getCategories()
     }, [states.productsCategories])
-
-
-
+    // states.productsCategories
     const timeDelivery = deliveryTime + 15
 
     const goback = () => {
