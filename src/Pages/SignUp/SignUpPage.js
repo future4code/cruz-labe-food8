@@ -13,7 +13,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { baseUrl } from "../../Constants/urls";
 import MenuBack from "../../Components/MenuBack"
-import { goToFeed } from "../../Router/coordinator";
+import { goToRegisterAddress } from "../../Router/coordinator";
 import { useHistory } from "react-router-dom";
 
 const Logo = styled.img`
@@ -70,7 +70,8 @@ const SignUpPage = () => {
       .post(`${baseUrl}/signup`, body)
       .then((res) => {
         localStorage.setItem("token", res.data.token);
-        goToFeed(history);
+        localStorage.setItem('user', JSON.stringify(res.data.user));
+        goToRegisterAddress(history);
       })
       .catch((err) => {
         alert(err.response.data.message);

@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { baseUrl } from "../../Constants/urls";
 import { useForm } from "../../Hooks/useForm";
-import { goToFeed, goToRegister } from "../../Router/coordinator";
+import { goToRegister, goToRegisterAddress } from "../../Router/coordinator";
 import logo_img from "../../Imgs/logo_red.png";
 
 const LoginPage = () => {
@@ -26,7 +26,7 @@ const LoginPage = () => {
       .then((res) => {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('user', JSON.stringify(res.data.user));
-        goToFeed(history)
+        goToRegisterAddress(history);
       })
       .catch((err) => {
         alert(err.response.data.message);
