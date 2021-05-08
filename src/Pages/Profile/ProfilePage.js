@@ -24,7 +24,7 @@ function ProfilePage() {
 
     useEffect(() => {
        
-    }, [address]);
+    }, [address, profile]);
 
     const listOrders =
         arrayOrders ? (

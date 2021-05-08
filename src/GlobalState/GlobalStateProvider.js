@@ -19,6 +19,7 @@ const GlobalStateProvider = (props) => {
   const [addressUpdated, setAddressUpdated] = useState("")
   const [form, onChange, resetForm] = useForm(initialForm)
   const [dataRestaurant, setDataRestaurant] = useState({})
+  const profile = useRequestData({}, `${baseUrl}/profile/`, axiosConfig)
   const [productsCategories, setProductsCategories] = useState([])
   const [product, setProduct] = useState([])
   const [cartProducts, setCartProducts] = useState([])
@@ -83,7 +84,7 @@ const GlobalStateProvider = (props) => {
 
   const logout = () => {
     window.localStorage.removeItem("token");
-    goToLogin(history);
+    window.localStorage.removeItem("user");
   };
 
   const putEditProfile = async (body, clear, history) => {
@@ -99,15 +100,12 @@ const GlobalStateProvider = (props) => {
     };
   }
 
-  const putEditAddress = async (body, clear, history) => {
+  const putEditAddress = async (body, clear) => {
 
     try {
       const response = await axios.put(`${baseUrl}/address`, body, axiosConfig);
       setAddressUpdated(response.data.user.address)
       clear()
-      goToProfile(history)
-      console.log("requisitou")
-
     } catch (err) {
       alert(`❌ ${err.response.data.message}`)
     };
