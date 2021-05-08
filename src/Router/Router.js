@@ -15,14 +15,10 @@ import RegisterAddress from "../Pages/RegisterAddress/RegisterAddress";
 
 function Router() {
   return (
-    <BrowserRouter>
+    // <BrowserRouter>
       <Switch>
         <Route exact path="/">
           <HomePage />
-        </Route>
-
-        <Route exact path="/address">
-          <RegisterAddress />
         </Route>
 
         <Route exact path="/login">
@@ -32,6 +28,10 @@ function Router() {
         <Route exact path="/signup">
           <SignUpPage />
           <MenuNav home />
+        </Route>
+
+        <Route exact path="/address">
+          <RegisterAddress />
         </Route>
 
         <Route exact path="/feed">
@@ -67,7 +67,7 @@ function Router() {
           <ErrorPage />
         </Route>
       </Switch>
-    </BrowserRouter>
+    // </BrowserRouter>
   );
 }
 

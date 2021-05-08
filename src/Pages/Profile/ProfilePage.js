@@ -21,9 +21,9 @@ function ProfilePage() {
     const address = states.editAddress[0].address
     const historyOrders = useRequestData([], `${baseUrl}/orders/history`, axiosConfig)
     const arrayOrders = historyOrders[0].orders
-
+    
     useEffect(() => {
-       
+
     }, [address, profile]);
 
     const listOrders =
@@ -41,7 +41,6 @@ function ProfilePage() {
             })
         ) : (<Loading />)
 
-
     return (
         <S.MainContainer>
             <S.Header>
@@ -50,6 +49,7 @@ function ProfilePage() {
             </S.Header>
             <S.UserContainer>
                 {user ? (
+
                     <S.UserData>
                         <p>{user.name}</p>
                         <p>{user.email}</p>

@@ -2,8 +2,8 @@ import React, { useEffect, useState, } from "react";
 import axios from 'axios'
 import { useHistory } from "react-router";
 import GlobalStateContext from "./GlobalStateContext";
-import { baseUrl, axiosConfig } from '../Constants/urls'
-import { goToLogin, goToProfile } from "../Router/coordinator";
+import { baseUrl, axiosConfig, token } from '../Constants/urls'
+import { goToHome, goToProfile } from "../Router/coordinator";
 import { useForm } from "../Hooks/useForm";
 import { initialForm } from "../Constants/inputs";
 import useRequestData from '../Hooks/useRequestData'
@@ -11,10 +11,10 @@ import useRequestData from '../Hooks/useRequestData'
 const GlobalStateProvider = (props) => {
   const history = useHistory();
   // const [restaurants, setRestaurants] = useState()
-  const getRestaurants = useRequestData([], `${baseUrl}/restaurants`, axiosConfig)
+  const getRestaurants = useRequestData( [], `${baseUrl}/restaurants`, axiosConfig) 
   const restaurants = getRestaurants[0].restaurants
   const [editProfile, setEditProfile] = useState({})
-  const editAddress = useRequestData({}, `${baseUrl}/profile/address`, axiosConfig) 
+  const editAddress = useRequestData({}, `${baseUrl}/profile/address`, axiosConfig)
   // const [editAddress, setEditAddress] = useState({})
   const [addressUpdated, setAddressUpdated] = useState("")
   const [form, onChange, resetForm] = useForm(initialForm)
@@ -25,12 +25,12 @@ const GlobalStateProvider = (props) => {
   const [cartProducts, setCartProducts] = useState([])
   const [id, setId] = useState()
   const [order, setOrder] = useState({})
- 
+
   useEffect(() => {
     // getEditAddress()
     // getRestaurants()
     getOrder()
-  }, [cartProducts])
+  }, [cartProducts, axiosConfig, editAddress])
 
   // const getRestaurants = async () => {
   //   try {
@@ -58,16 +58,16 @@ const GlobalStateProvider = (props) => {
   }
 
   const getCategories = () => {
-      let categories = product && product
+    let categories = product && product
 
-        .map((product) => {
-          return product.category
-        })
-        .filter(onlyUnique)
+      .map((product) => {
+        return product.category
+      })
+      .filter(onlyUnique)
 
-      return setProductsCategories(categories)
+    return setProductsCategories(categories)
   }
-  
+
 
   const postOrder = async () => {
     const body = {
@@ -144,8 +144,10 @@ const GlobalStateProvider = (props) => {
 
   const getOrder = async () => {
     try {
+      if (token) {
       const res = await axios.get(`${baseUrl}/active-order`, axiosConfig)
       setOrder(res.data.order)
+      } else {goToHome(history)}
     } catch (err) {
       alert(`❌ ${err.response.data.message}`)
     }

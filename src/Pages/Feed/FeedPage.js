@@ -4,6 +4,7 @@ import { useProtectedPage } from '../../Hooks/useProtectedPage'
 import Feed from '../../Components/Feed/Feed'
 import axios from 'axios'
 import { useHistory } from 'react-router'
+import {token} from '../../Constants/urls'
 import Loading from '../../Components/Loading/Loading'
 
 function FeedPage() {
@@ -13,7 +14,7 @@ function FeedPage() {
 
     return (
         <div>
-            {restaurants ?
+            {token ?
                 <>
                     <Feed
                         restaurants={restaurants}

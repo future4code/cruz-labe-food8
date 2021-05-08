@@ -1,6 +1,7 @@
 import { Button } from "@material-ui/core";
 import React, { useContext, useState, useEffect } from "react";
 import { useProtectedPage } from "../../Hooks/useProtectedPage";
+import { useHistory } from "react-router";
 import {
   MainContainer,
   Title,
@@ -21,6 +22,7 @@ import { initialForm } from "../../Constants/inputs";
 
 function CartPage() {
   useProtectedPage();
+  const history = useHistory();
   const [form] = useForm(initialForm)
   const { states, requests } = useContext(GlobalStateContext)
   const { neighbourhood, number } = states.editAddress[0].address || {}
