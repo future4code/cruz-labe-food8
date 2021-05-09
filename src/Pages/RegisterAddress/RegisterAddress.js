@@ -8,24 +8,12 @@ import axios from "axios";
 import { baseUrl } from "../../Constants/urls";
 import { goToLogin } from "../../Router/coordinator";
 import { MainContainer, Title, StyledForm } from './Styled'
-import { initialForm } from '../../Constants/inputs'
-// import EditAddress from '../../Components/EditAddress'
 import GlobalStateContext from '../../GlobalState/GlobalStateContext'
 
 const RegisterAddress = () => {
   useProtectedPage();
   const history = useHistory();
   const { requests } = useContext(GlobalStateContext);
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`${baseUrl}/profile/address`, {
-  //       headers: { auth: localStorage.getItem("token") },
-  //     })
-  //     .then((res) => {
-  //       res.data.address && goToFeed(history);
-  //     })
-  // }, []);
 
   const [form, onChange, clear] = useForm({
     street: "",
@@ -38,7 +26,6 @@ const RegisterAddress = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // requests.putEditAddress(form, clear, history);
     const body = {
       street: form.street,
       city: form.city,
@@ -59,7 +46,7 @@ const RegisterAddress = () => {
         alert(err.response.data.message);
       });
 
-    
+
   };
 
   return (

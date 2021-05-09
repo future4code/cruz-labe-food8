@@ -2,7 +2,7 @@ import React, { useEffect, useState, } from "react";
 import axios from 'axios'
 import { useHistory } from "react-router";
 import GlobalStateContext from "./GlobalStateContext";
-import { baseUrl, axiosConfig, token } from '../Constants/urls'
+import { baseUrl, axiosConfig } from '../Constants/urls'
 import { goToHome, goToProfile } from "../Router/coordinator";
 import { useForm } from "../Hooks/useForm";
 import { initialForm } from "../Constants/inputs";
@@ -10,16 +10,13 @@ import useRequestData from '../Hooks/useRequestData'
 
 const GlobalStateProvider = (props) => {
   const history = useHistory();
-  // const [restaurants, setRestaurants] = useState()
-  const getRestaurants = useRequestData( [], `${baseUrl}/restaurants`, axiosConfig) 
+  const getRestaurants = useRequestData([], `${baseUrl}/restaurants`)
   const restaurants = getRestaurants[0].restaurants
   const [editProfile, setEditProfile] = useState({})
-  const editAddress = useRequestData({}, `${baseUrl}/profile/address`, axiosConfig)
-  // const [editAddress, setEditAddress] = useState({})
+  const editAddress = useRequestData({}, `${baseUrl}/profile/address`)
   const [addressUpdated, setAddressUpdated] = useState("")
-  const [form, onChange, resetForm] = useForm(initialForm)
+  const [form] = useForm(initialForm)
   const [dataRestaurant, setDataRestaurant] = useState({})
-  const profile = useRequestData({}, `${baseUrl}/profile/`, axiosConfig)
   const [productsCategories, setProductsCategories] = useState([])
   const [product, setProduct] = useState([])
   const [cartProducts, setCartProducts] = useState([])
@@ -27,20 +24,8 @@ const GlobalStateProvider = (props) => {
   const [order, setOrder] = useState({})
 
   useEffect(() => {
-    // getEditAddress()
-    // getRestaurants()
     getOrder()
   }, [cartProducts, axiosConfig, editAddress])
-
-  // const getRestaurants = async () => {
-  //   try {
-  //     const res = await axios.get(`${baseUrl}/restaurants`, axiosConfig)
-  //     setRestaurants(res.data.restaurants)
-  //   } catch (err) {
-  //     alert(`❌ ${err.response.data.message}`)
-  //   }
-  // }
-
 
   const getRestaurantDetail = async (restaurantId) => {
     try {
@@ -127,7 +112,6 @@ const GlobalStateProvider = (props) => {
           })
         }
       }
-
       )
     }
 
@@ -144,10 +128,10 @@ const GlobalStateProvider = (props) => {
 
   const getOrder = async () => {
     try {
-      if (token) {
-      const res = await axios.get(`${baseUrl}/active-order`, axiosConfig)
-      setOrder(res.data.order)
-      } else {goToHome(history)}
+      if (window.localStorage.getItem('token')) {
+        const res = await axios.get(`${baseUrl}/active-order`, axiosConfig)
+        setOrder(res.data.order)
+      } else { goToHome(history) }
     } catch (err) {
       alert(`❌ ${err.response.data.message}`)
     }

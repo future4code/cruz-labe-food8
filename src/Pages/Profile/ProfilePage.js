@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useProtectedPage } from '../../Hooks/useProtectedPage'
-import { baseUrl, axiosConfig } from '../../Constants/urls'
+import { baseUrl } from '../../Constants/urls'
 import { goToProfileAddressEdit, goToProfileNameEdit } from "../../Router/coordinator";
 import { useHistory } from "react-router";
 import GlobalStateContext from "../../GlobalState/GlobalStateContext";
@@ -15,13 +15,13 @@ import Loading from '../../Components/Loading/Loading'
 function ProfilePage() {
     useProtectedPage()
     const history = useHistory();
-    const { states, setters, requests } = useContext(GlobalStateContext);
-    const profile = useRequestData({}, `${baseUrl}/profile/`, axiosConfig)
+    const { states } = useContext(GlobalStateContext);
+    const profile = useRequestData({}, `${baseUrl}/profile/`)
     const user = profile[0].user
     const address = states.editAddress[0].address
-    const historyOrders = useRequestData([], `${baseUrl}/orders/history`, axiosConfig)
+    const historyOrders = useRequestData([], `${baseUrl}/orders/history`)
     const arrayOrders = historyOrders[0].orders
-    
+
     useEffect(() => {
 
     }, [address, profile]);
@@ -36,7 +36,6 @@ function ProfilePage() {
                         <p>Valor Total: R${order.totalPrice}</p>
                         <hr />
                     </div>
-
                 )
             })
         ) : (<Loading />)
@@ -78,12 +77,9 @@ function ProfilePage() {
 
             <S.HistoryContainer>
                 <p>Histórico de Pedidos</p>
-                <S.ListOrders> {listOrders} </S.ListOrders>.
-
+                <S.ListOrders> {listOrders} </S.ListOrders>
             </S.HistoryContainer>
-
         </S.MainContainer>
     );
 }
-
 export default ProfilePage;

@@ -11,7 +11,7 @@ import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
 import { baseUrl } from "../../Constants/urls";
 import { useForm } from "../../Hooks/useForm";
-import { goToFeed, goToRegister } from "../../Router/coordinator";
+import { goToFeed, goToRegister, goToLogin } from "../../Router/coordinator";
 import logo_img from "../../Imgs/logo_red.png";
 import GlobalStateContext from "../../GlobalState/GlobalStateContext";
 
@@ -34,6 +34,7 @@ const LoginPage = () => {
         alert(err.response.data.message);
       });
   };
+
 
   const register = () => {
     requests.logout()
