@@ -6,26 +6,14 @@ import { Button, TextField } from "@material-ui/core";
 import { useForm } from "../../Hooks/useForm";
 import axios from "axios";
 import { baseUrl } from "../../Constants/urls";
-import { goToFeed } from "../../Router/coordinator";
-import {MainContainer, Title, StyledForm} from './Styled'
+import { goToLogin } from "../../Router/coordinator";
+import { MainContainer, Title, StyledForm } from './Styled'
 import GlobalStateContext from '../../GlobalState/GlobalStateContext'
 
 const RegisterAddress = () => {
   useProtectedPage();
-  const { requests } = useContext(GlobalStateContext);
-
   const history = useHistory();
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`${baseUrl}/profile/address`, {
-  //       headers: { auth: localStorage.getItem("token") },
-  //     })
-  //     .then((res) => {
-  //       res.data.address && goToFeed(history);
-  //     })
-  // }, []);
-
+  const { requests } = useContext(GlobalStateContext);
 
   const [form, onChange, clear] = useForm({
     street: "",
@@ -38,30 +26,31 @@ const RegisterAddress = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // const body = {
-    //   street: form.street,
-    //   city: form.city,
-    //   state: form.state,
-    //   number: form.number,
-    //   complement: form.complement,
-    //   neighbourhood: form.neighbourhood,
-    // };
-    // axios
-    //   .put(`${baseUrl}/address`, body, {
-    //     headers: { auth: localStorage.getItem("token") },
-    //   })
-    //   .then((res) => {
-    //     alert("endereço cadastrado");
-    //     goToFeed(history);
-    //   })
-    //   .catch((err) => {
-    //     alert(err.response.data.message);
-    //   });
-    requests.putEditAddress(form, clear, history);
-      goToFeed(history)
+    const body = {
+      street: form.street,
+      city: form.city,
+      state: form.state,
+      number: form.number,
+      complement: form.complement,
+      neighbourhood: form.neighbourhood,
+    };
+    axios
+      .put(`${baseUrl}/address`, body, {
+        headers: { auth: localStorage.getItem("token") },
+      })
+      .then((res) => {
+        alert("endereço cadastrado");
+        goToLogin(history)
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
+
+
   };
 
   return (
+
     <MainContainer>
       <MenuBack />
       <Title>Meu endereço</Title>

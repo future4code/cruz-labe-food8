@@ -27,7 +27,8 @@ function ProfileEditAddressPage() {
 
   const onSubmitForm = (event) => {
     event.preventDefault();
-    requests.putEditAddress(form, clear, history);
+    requests.putEditAddress(form, clear);
+    goToProfile(history)
   };
 
   return (
@@ -69,6 +70,7 @@ function ProfileEditAddressPage() {
           variant={"outlined"}
           fullWidth
           margin={"normal"}
+          required
           type={"text"}
           placeholder={"Complemento"}
         />

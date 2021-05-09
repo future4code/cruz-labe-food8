@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { axiosConfig } from '../Constants/urls'
+import { useHistory } from "react-router";
+import {goToHome} from '../Router/coordinator'
 
-const useRequestData = (initialData, url, header) => {
+const useRequestData = (initialData, url) => {
+    const history = useHistory();
     const [data, setData] = useState(initialData)
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        axios.get(url, header)
+        if(window.localStorage.getItem('token')){
+        axios.get(url, { headers: { auth: window.localStorage.getItem('token') }})
             .then((response) => {
                 setData(response.data)
             })
@@ -14,7 +19,8 @@ const useRequestData = (initialData, url, header) => {
                 alert(`❌ ${error.response.data.message}`)
             })
             setIsLoading(false)
-    }, [url, header, data])
+        } else {goToHome(history)}
+    }, [url, window.localStorage.getItem('token'), data])
     return [data, isLoading]
 }
 export default useRequestData

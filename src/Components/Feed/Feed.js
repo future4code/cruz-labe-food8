@@ -16,10 +16,10 @@ function Feed(props) {
     let { states, requests } = useContext(GlobalStateContext)
     const restaurants = props.restaurants
     const [searchOpen, setSearchOpen] = useState(false)
-    const [products, setProducts] = useState([])
-    const [productsName, setProductsName] = useState([])
+    // const [products, setProducts] = useState([])
+    // const [productsName, setProductsName] = useState([])
     const [filter, setFilter] = useState()
-    const {expiresAt, restaurantName, totalPrice} = states.order || {}
+    const { expiresAt, restaurantName, totalPrice } = states.order || {}
     let date = new Date(expiresAt)
     const actual = new Date()
 
@@ -90,7 +90,7 @@ function Feed(props) {
             setFilter(filtered)
         )
     }
- 
+
 
     // const getProducts = async () => {
     //     try {
@@ -135,7 +135,7 @@ function Feed(props) {
     // console.log(filter)
 
     const renderOrder = () => {
-        if (restaurantName ) {
+        if (restaurantName) {
             return (
                 <ContainerFloat>
                     <ContainerImg>
@@ -156,42 +156,42 @@ function Feed(props) {
         if (searchOpen) {
             return (
                 <>
-                            <HeaderContainer back>
-                                <ButtonBack onClick={() => onClickBack()}> <img src={back} alt='back' /> </ButtonBack>
-                                <Title>Busca</Title>
-                                <p></p>
-                            </HeaderContainer>
+                    <HeaderContainer back>
+                        <ButtonBack onClick={() => onClickBack()}> <img src={back} alt='back' /> </ButtonBack>
+                        <Title>Busca</Title>
+                        <p></p>
+                    </HeaderContainer>
 
-                            <ContainerFilter>
-                                {categoryOptions}
-                            </ContainerFilter>
-                        </>
+                    <ContainerFilter>
+                        {categoryOptions}
+                    </ContainerFilter>
+                </>
             )
         } else {
             return (
                 <>
-                            <HeaderContainer>
-                                <Title>Ifuture</Title>
-                            </HeaderContainer>
-                            <div>
-                                <form onSubmit={sendForm}>
-                                    <Icon src='https://cdn.zeplin.io/5dd5ab8e5fb2a0060f81698f/assets/2B6D2876-FB2A-4EF4-8B8D-5314BF50995F.svg' alt="search" />
+                    <HeaderContainer>
+                        <Title>Ifuture</Title>
+                    </HeaderContainer>
+                    <div>
+                        <form onSubmit={sendForm}>
+                            <Icon src='https://cdn.zeplin.io/5dd5ab8e5fb2a0060f81698f/assets/2B6D2876-FB2A-4EF4-8B8D-5314BF50995F.svg' alt="search" />
 
-                                    <InputSearch
-                                        type={"text"}
-                                        name={"inputSearch"}
-                                        value={form.inputSearch}
-                                        placeholder={"Restaurante"}
-                                        onChange={onChange}
-                                    >
-                                    </InputSearch>
+                            <InputSearch
+                                type={"text"}
+                                name={"inputSearch"}
+                                value={form.inputSearch}
+                                placeholder={"Restaurante"}
+                                onChange={onChange}
+                            >
+                            </InputSearch>
 
-                                </form>
-                            </div>
-                            <ContainerFilter>
-                                {categoryOptions}
-                            </ContainerFilter>
-                        </>
+                        </form>
+                    </div>
+                    <ContainerFilter>
+                        {categoryOptions}
+                    </ContainerFilter>
+                </>
             )
         }
 
@@ -199,14 +199,14 @@ function Feed(props) {
 
     return (
         <div>
-                            {Render()}
-                            <CardAllRestaurants
-                                restaurants={filter}
-                            />
-                            {actual === date ? '' : (renderOrder())}
-                            {renderOrder()}
+            {Render()}
+            <CardAllRestaurants
+                restaurants={filter}
+            />
+            {actual === date ? '' : (renderOrder())}
+            {renderOrder()}
 
-                        </div>
+        </div>
     )
 }
 
